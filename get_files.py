@@ -12,6 +12,7 @@ from os.path import isfile, join
 
 def get_text_of_url(url: str) -> str:
   r = requests.get(url)
+  r.encoding = "utf-8"
   return r.text
 
 
@@ -37,7 +38,8 @@ def get_card_name_and_link(card_html: NavigableString) -> tuple[str, str]:
 def get_list_of_cards(in_file_name: str = "collection.html",
                       out_file_name: str = "cards_dict.json"):
   with open(in_file_name, "r") as file:
-    soup = bs4(file, "html.parser")
+    soup = bs4(file, "html.parser", from_encoding="utf-8")
+    print(soup.original_encoding)
   cards_dict = {}
   for card_div in soup.find_all("div", "card"):
     (card_name, card_link) = get_card_name_and_link(card_div)
@@ -52,8 +54,7 @@ def get_cards_html(in_file_name: str):
     cards = json.loads(file.read())
   for name, link in cards.items():
     card_file_name = f"cards_html/{name}.html"
-    url_content_to_file(f"https://magenoir.com/{link}",
-                        card_file_name)
+    url_content_to_file(f"https://magenoir.com/{link}", card_file_name)
     with open(card_file_name, "r") as card_file:
       card_soup = bs4(card_file, "html.parser").find("div", "card-details")
     text_to_file(str(card_soup), card_file_name)
@@ -79,8 +80,8 @@ def extract_card_details_from_file(file_name: str,
     card = bs4(file, "html.parser")
     for br in card.select("br"):
       br.replace_with("\n")
-    details_table = card.find(
-        "table", class_="card-details-infos-table").find_all("tr")
+    details_table = card.find("table",
+                              class_="card-details-infos-table").find_all("tr")
     details_dict = []
     décalage = False
     for details in details_table:
@@ -130,7 +131,7 @@ def get_cards_json_from_html(in_file_name: str, out_file_name: str):
 #get_cards_json_from_html("cards_html", "cards_catalog.json")
 
 
-def do_everything(workspace="worksapce"):
+def do_everything(workspace="workspace"):
   if not access(workspace, F_OK):
     mkdir(workspace)
   print(getcwd())
