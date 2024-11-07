@@ -1,0 +1,5 @@
+cards_html/
+cards_*.json
+*.html
+*.pyc
+*.swp
