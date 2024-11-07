@@ -1,8 +1,8 @@
 [project]
-name = "python-template"
+name = "TomeduMageNoir"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "A basic deckbuilder for the Mage Noir game"
+authors = ["Espequair <espequair@gmail.com>"]
 requires-python = ">=3.11"
 dependencies = [
     "beautifulsoup4>=4.12.3",
