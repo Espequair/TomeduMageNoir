@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs4, NavigableString
 import json
 import requests
 from time import sleep
-from os import listdir
+from os import access, listdir, getcwd, chdir, mkdir, F_OK
 from os.path import isfile, join
 
 # "https://magenoir.com/collection_fr.html"
@@ -46,10 +46,17 @@ def get_list_of_cards(in_file_name: str = "collection.html",
 
 
 def get_cards_html(in_file_name: str):
+  if not access("cards_html", F_OK):
+    mkdir("cards_html")
   with open(in_file_name, "r") as file:
     cards = json.loads(file.read())
   for name, link in cards.items():
-    url_content_to_file(f"https://magenoir.com/{link}", f"cards_html/{name}")
+    card_file_name = f"cards_html/{name}.html"
+    url_content_to_file(f"https://magenoir.com/{link}",
+                        card_file_name)
+    with open(card_file_name, "r") as card_file:
+      card_soup = bs4(card_file, "html.parser").find("div", "card-details")
+    text_to_file(str(card_soup), card_file_name)
     sleep(1)
 
 
@@ -72,8 +79,7 @@ def extract_card_details_from_file(file_name: str,
     card = bs4(file, "html.parser")
     for br in card.select("br"):
       br.replace_with("\n")
-    main_section = card.find("section", "main-section")
-    details_table = main_section.find(
+    details_table = card.find(
         "table", class_="card-details-infos-table").find_all("tr")
     details_dict = []
     décalage = False
@@ -121,12 +127,20 @@ def get_cards_json_from_html(in_file_name: str, out_file_name: str):
   json_to_file(cards_dict, "cards_catalog.json")
 
 
-get_cards_json_from_html("cards_html", "cards_catalog.json")
+#get_cards_json_from_html("cards_html", "cards_catalog.json")
 
 
-def do_everything():
+def do_everything(workspace="worksapce"):
+  if not access(workspace, F_OK):
+    mkdir(workspace)
+  print(getcwd())
+  chdir(workspace)
+  print(getcwd())
   url_content_to_file("https://magenoir.com/collection_fr.html",
                       "collection.html")
   get_list_of_cards()
   get_cards_html("cards_dict.json")
   get_cards_json_from_html("cards_html", "cards_catalog.json")
+
+
+do_everything()
