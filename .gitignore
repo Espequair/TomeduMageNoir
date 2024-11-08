@@ -3,3 +3,4 @@ cards_*.json
 *.html
 *.pyc
 *.swp
+.replit/
