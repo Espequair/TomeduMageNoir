@@ -10,26 +10,44 @@ from os.path import isfile, join
 # "collection.html"
 
 
-def get_text_of_url(url: str) -> str:
+def get_text_of_url(url: str, encoding: str | None = "utf-8") -> str:
+  """
+  Returns the full html text of a webpage, in the utf-8 encoding
+  """
   r = requests.get(url)
-  r.encoding = "utf-8"
+  if encoding is not None:
+    r.encoding = encoding
   return r.text
 
 
 def text_to_file(text: str, file_name: str):
+  """
+  Writes the full text given to it to a file, encoded in utf-8
+  """
   with open(file_name, "w", encoding="utf-8") as f:
     f.write(text)
 
 
 def json_to_file(json_data, file_name: str):
+  """
+  Writes a Python object as a JSON in a file
+  """
   text_to_file(json.dumps(json_data, indent=2, ensure_ascii=False), file_name)
 
 
-def url_content_to_file(url: str, file_name: str):
+def url_content_to_file(url: str,
+                        file_name: str,
+                        encoding: str | None = "utf-8"):
+  """
+  Writes the content of a page into a file, utf-8 encoding
+  """
   text_to_file(get_text_of_url(url), file_name)
 
 
 def get_card_name_and_link(card_html: NavigableString) -> tuple[str, str]:
+  """
+  From a "card" div in the catalog page, gets the name and link of the card
+  """
   card_link = card_html.find("a").get("href")
   card_name = card_link.rsplit("/")[-1].split(".")[0]
   return (card_name, card_link)
@@ -80,6 +98,7 @@ def extract_card_details_from_file(file_name: str,
     card_soup = bs4(file, "html.parser")
     for br in card_soup.select("br"):
       br.replace_with("\n")
+
     details_table = card_soup.find(
         "table", class_="card-details-infos-table").find_all("tr")
     details_dict = []
@@ -95,6 +114,9 @@ def extract_card_details_from_file(file_name: str,
       details_dict.append(details_value)
 
     card = {}
+    mn_image_link = card_soup.find("img", alt="image")["src"][9:]
+    card["easy_file_name"] = file_name.split("/")[1][:-5]
+    card["mn_image_link"] = f"https://magenoir.com/{mn_image_link}"
     card["language"] = language
     card["competitive_limit"] = 4
     card["other_languages"] = {}
@@ -126,6 +148,22 @@ def get_cards_json_from_html(in_file_name: str, out_file_name: str):
   for file_name in onlyfiles:
     cards_dict.append(extract_card_details_from_file(file_name, "fr"))
   json_to_file(cards_dict, "cards_catalog.json")
+
+
+def get_images(in_file_name: str = "cards_catalog.json",
+               cards_image_folder_name: str = "cards_img/"):
+  if not access(cards_image_folder_name, F_OK):
+    mkdir(cards_image_folder_name)
+  with open(in_file_name) as file:
+    card_catalog = json.loads(file.read())
+  print(card_catalog)
+  for card in card_catalog:
+    with open(f"{cards_image_folder_name}{card['easy_file_name']}.png","wb") as card_image_file:
+      print("downloading image for " +
+          f"{cards_image_folder_name}{card['easy_file_name']}")
+      card_request = requests.get(card["mn_image_link"])
+      card_image_file.write(card_request.content)
+    sleep(1)
 
 
 def do_everything(workspace="workspace"):
