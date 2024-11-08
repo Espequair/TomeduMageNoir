@@ -1,9 +1,6 @@
-from flask import Flask
+from get_files import do_everything, get_cards_json_from_html
 
-app = Flask('app')
+do_everything()
 
-@app.route('/')
-def hello_world():
-  return 'Hello, World!'
-
-app.run(host='0.0.0.0', port=8080)
+#chdir("workspace")
+#get_cards_json_from_html("cards_html", "cards_catalog.json")

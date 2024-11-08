@@ -128,10 +128,6 @@ def get_cards_json_from_html(in_file_name: str, out_file_name: str):
   json_to_file(cards_dict, "cards_catalog.json")
 
 
-chdir("workspace")
-get_cards_json_from_html("cards_html", "cards_catalog.json")
-
-
 def do_everything(workspace="workspace"):
   if not access(workspace, F_OK):
     mkdir(workspace)
@@ -143,6 +139,3 @@ def do_everything(workspace="workspace"):
   get_list_of_cards()
   get_cards_html("cards_dict.json")
   get_cards_json_from_html("cards_html", "cards_catalog.json")
-
-
-#do_everything()
