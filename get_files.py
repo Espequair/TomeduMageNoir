@@ -55,6 +55,9 @@ def get_card_name_and_link(card_html: NavigableString) -> tuple[str, str]:
 
 def get_list_of_cards(in_file_name: str = "collection.html",
                       out_file_name: str = "cards_dict.json"):
+  """
+  From the catalog page's html, will extract the name and link of cards to put them in a json and write it to a file
+  """
   with open(in_file_name, "r", encoding="utf-8") as file:
     soup = bs4(file, "html.parser", from_encoding="utf-8")
     print(soup.original_encoding)
@@ -66,6 +69,9 @@ def get_list_of_cards(in_file_name: str = "collection.html",
 
 
 def get_cards_html(in_file_name: str):
+  """
+  Gets the html of every card in a json, stores it each in a file
+  """
   if not access("cards_html", F_OK):
     mkdir("cards_html")
   with open(in_file_name, "r", encoding="utf-8") as file:
@@ -80,6 +86,9 @@ def get_cards_html(in_file_name: str):
 
 
 def extract_costs(text: NavigableString) -> dict[str, int]:
+  """
+  Extracts the costs in mana or components of a card
+  """
   costs = [comp.text.strip() for comp in text.find_all("li")]
   costs_dict = {}
   if len(costs) == 0:
@@ -94,6 +103,9 @@ def extract_costs(text: NavigableString) -> dict[str, int]:
 
 def extract_card_details_from_file(file_name: str,
                                    language: str) -> dict[str, Any]:
+  """
+  Extracts the details of a card
+  """
   with open(file_name, "r", encoding="utf-8") as file:
     card_soup = bs4(file, "html.parser")
     for br in card_soup.select("br"):
@@ -140,6 +152,9 @@ def extract_card_details_from_file(file_name: str,
 
 
 def get_cards_json_from_html(in_file_name: str, out_file_name: str):
+  """
+  Makes a JSON from a folder of html
+  """
   onlyfiles = [
       join(in_file_name, f) for f in listdir("cards_html")
       if isfile(join("cards_html", f))
@@ -152,6 +167,9 @@ def get_cards_json_from_html(in_file_name: str, out_file_name: str):
 
 def get_images(in_file_name: str = "cards_catalog.json",
                cards_image_folder_name: str = "cards_img/"):
+  """
+  Gets the images of every card
+  """
   if not access(cards_image_folder_name, F_OK):
     mkdir(cards_image_folder_name)
   with open(in_file_name) as file:
@@ -177,3 +195,4 @@ def do_everything(workspace="workspace"):
   get_list_of_cards()
   get_cards_html("cards_dict.json")
   get_cards_json_from_html("cards_html", "cards_catalog.json")
+  get_images()
