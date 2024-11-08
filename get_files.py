@@ -17,12 +17,12 @@ def get_text_of_url(url: str) -> str:
 
 
 def text_to_file(text: str, file_name: str):
-  with open(file_name, "w") as f:
+  with open(file_name, "w", encoding="utf-8") as f:
     f.write(text)
 
 
 def json_to_file(json_data, file_name: str):
-  text_to_file(json.dumps(json_data, indent=2, ensure_ascii=True), file_name)
+  text_to_file(json.dumps(json_data, indent=2, ensure_ascii=False), file_name)
 
 
 def url_content_to_file(url: str, file_name: str):
@@ -37,7 +37,7 @@ def get_card_name_and_link(card_html: NavigableString) -> tuple[str, str]:
 
 def get_list_of_cards(in_file_name: str = "collection.html",
                       out_file_name: str = "cards_dict.json"):
-  with open(in_file_name, "r") as file:
+  with open(in_file_name, "r", encoding="utf-8") as file:
     soup = bs4(file, "html.parser", from_encoding="utf-8")
     print(soup.original_encoding)
   cards_dict = {}
@@ -50,12 +50,12 @@ def get_list_of_cards(in_file_name: str = "collection.html",
 def get_cards_html(in_file_name: str):
   if not access("cards_html", F_OK):
     mkdir("cards_html")
-  with open(in_file_name, "r") as file:
+  with open(in_file_name, "r", encoding="utf-8") as file:
     cards = json.loads(file.read())
   for name, link in cards.items():
     card_file_name = f"cards_html/{name}.html"
     url_content_to_file(f"https://magenoir.com/{link}", card_file_name)
-    with open(card_file_name, "r") as card_file:
+    with open(card_file_name, "r", encoding="utf-8") as card_file:
       card_soup = bs4(card_file, "html.parser").find("div", "card-details")
     text_to_file(str(card_soup), card_file_name)
     sleep(1)
@@ -77,11 +77,11 @@ def extract_costs(text: NavigableString) -> dict[str, int]:
 def extract_card_details_from_file(file_name: str,
                                    language: str) -> dict[str, Any]:
   with open(file_name, "r", encoding="utf-8") as file:
-    card = bs4(file, "html.parser")
-    for br in card.select("br"):
+    card_soup = bs4(file, "html.parser")
+    for br in card_soup.select("br"):
       br.replace_with("\n")
-    details_table = card.find("table",
-                              class_="card-details-infos-table").find_all("tr")
+    details_table = card_soup.find(
+        "table", class_="card-details-infos-table").find_all("tr")
     details_dict = []
     décalage = False
     for details in details_table:
@@ -112,7 +112,7 @@ def extract_card_details_from_file(file_name: str,
     card["extension"] = details_dict[8 + décalage].text.strip()
     card["notes"] = [
         notes.text
-        for notes in main_section.find("table", class_="table").find_all("td")
+        for notes in card_soup.find("table", class_="table").find_all("td")
     ]
     return card
 
@@ -128,7 +128,8 @@ def get_cards_json_from_html(in_file_name: str, out_file_name: str):
   json_to_file(cards_dict, "cards_catalog.json")
 
 
-#get_cards_json_from_html("cards_html", "cards_catalog.json")
+chdir("workspace")
+get_cards_json_from_html("cards_html", "cards_catalog.json")
 
 
 def do_everything(workspace="workspace"):
@@ -144,4 +145,4 @@ def do_everything(workspace="workspace"):
   get_cards_json_from_html("cards_html", "cards_catalog.json")
 
 
-do_everything()
+#do_everything()
