@@ -4,3 +4,4 @@ cards_*.json
 *.pyc
 *.swp
 .replit
+workspace/
