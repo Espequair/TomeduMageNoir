@@ -3,5 +3,6 @@ cards_*.json
 *.html
 *.pyc
 *.swp
+uv.lock
 .replit
 workspace/
