@@ -22,8 +22,7 @@ Il y a des incohérences mineures dans la façon dont les cartes sont enregistr�
 |                | **Saison 1**       | **Saision 2**     |
 |----------------|--------------------|-------------------|
 | **Equipement** | [Equipement - Type](https://magenoir.com/collection/FR/air/Baguette_des_courants_d_air.html)  | [Equipement : Type](https://magenoir.com/collection/FR/air/Bottes-statiques.html) |
-| **Permanents** | [Utilise PV](https://magenoir.com/collection/FR/vegetal/Arbre-mort.html) | [Utilise HP](https://magenoir.com/collection/FR/vegetal/Fleur-fractale.html)
-        |
+| **Permanents** | [Utilise PV](https://magenoir.com/collection/FR/vegetal/Arbre-mort.html) | [Utilise HP](https://magenoir.com/collection/FR/vegetal/Fleur-fractale.html)|
 | **Noms**       | [En MAJUSCULES](https://magenoir.com/collection/FR/vegetal/Arbre-mort.html)      | [En minuscules]()     |
 
 
