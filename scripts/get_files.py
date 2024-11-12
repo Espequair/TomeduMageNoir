@@ -187,6 +187,17 @@ def get_images(in_file_name: str = "cards_catalog.json",
       card_image_file.write(card_request.content)
     sleep(1)
 
+def get_pictograms(pictogram_folder_name: str = "pict"):
+  """
+  Gets the pictograms
+  """
+  if not access(pictogram_folder_name, F_OK):
+    mkdir(pictogram_folder_name)
+  elements = ["fire", "air", "mineral", "arcane", "vegetal", "water"]
+  for e in elements:
+    with open(f"{pictogram_folder_name}/{e}_icon.png","wb") as pict_file:
+      pict_request = requests.get(f"https://magenoir.com/img/mage-noir/pictograms/{e}_icon.png")
+      pict_file.write(pict_request.content)
 
 def do_everything(workspace="workspace"):
   if not access(workspace, F_OK):
