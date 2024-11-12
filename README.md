@@ -16,6 +16,15 @@ Il est destiné à ceux qui souhaite améliorer le site (a venir) tdmn.espequair
     - [ ]  "Nom"  - Texte
     - [ ]  "Mana Requis" - Texte pour chaque élément
 
+## Fixes to do in the collection file
+Il y a des incohérences mineures dans la façon dont les cartes sont enregistrés
+
+|                | **Saison 1**       | **Saision 2**     |
+|----------------|--------------------|-------------------|
+| **Equipement** | Equipement - Type  | Equipement : Type |
+| **Permanents** | Utilise PV         | Utilise HP        |
+| **Noms**       | En MAJUSCULES      | En minuscules     |
+
 
 ## SCRIPTS
 
