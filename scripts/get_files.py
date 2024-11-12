@@ -127,7 +127,7 @@ def extract_card_details_from_file(file_name: str,
 
     card = {}
     mn_image_link = card_soup.find("img", alt="image")["src"][9:]
-    card["easy_file_name"] = file_name.split("/")[1][:-5]
+    card["slug"] = file_name.split("/")[1][:-5]
     card["mn_image_link"] = f"https://magenoir.com/{mn_image_link}"
     card["language"] = language
     card["competitive_limit"] = 4
@@ -176,9 +176,9 @@ def get_images(in_file_name: str = "cards_catalog.json",
     card_catalog = json.loads(file.read())
   print(card_catalog)
   for card in card_catalog:
-    with open(f"{cards_image_folder_name}{card['easy_file_name']}.png","wb") as card_image_file:
+    with open(f"{cards_image_folder_name}{card['slug']}.png","wb") as card_image_file:
       print("downloading image for " +
-          f"{cards_image_folder_name}{card['easy_file_name']}")
+          f"{cards_image_folder_name}{card['slug']}")
       card_request = requests.get(card["mn_image_link"])
       card_image_file.write(card_request.content)
     sleep(1)
