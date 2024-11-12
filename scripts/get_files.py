@@ -114,17 +114,22 @@ def extract_card_details_from_file(file_name: str,
     details_table = card_soup.find(
         "table", class_="card-details-infos-table").find_all("tr")
     details_dict = []
-    décalage = False
+    PV_shift = False
+    limit_shift=False
     for details in details_table:
       rows = details.find_all("td")
       if len(rows) < 2:
         continue
       details_title = details.find_all("td")[0].text[0:-3]
+      if details_title == "Limite en deck":
+        limit_shift = True
+        print("!!!")
       if details_title == "PV" or details_title == "HP":
-        décalage = True
+        PV_shift = True
       details_value = details.find_all("td")[1]
       details_dict.append(details_value)
 
+    total_shift = PV_shift + limit_shift
     card = {}
     mn_image_link = card_soup.find("img", alt="image")["src"][9:]
     card["slug"] = file_name.split("/")[1][:-5]
@@ -134,16 +139,15 @@ def extract_card_details_from_file(file_name: str,
     card["other_languages"] = {}
     card["name"] = details_dict[0].text.strip()
     name = card["name"]
-    print(name)
-    card["element"] = details_dict[1].text.strip()
-    card["type"] = details_dict[2].text.strip()
-    card["lifepoints"] = details_dict[3].text.strip() if décalage else None
-    card["mana_cost"] = extract_costs(details_dict[3 + décalage])
-    card["components"] = extract_costs(details_dict[4 + décalage])
-    card["effect"] = details_dict[5 + décalage].text.strip()
-    card["illustration"] = details_dict[6 + décalage].text.strip()
-    card["flavor_text"] = details_dict[7 + décalage].text.strip()
-    card["extension"] = details_dict[8 + décalage].text.strip()
+    card["element"] = details_dict[1 + limit_shift].text.strip()
+    card["type"] = details_dict[2 + limit_shift].text.strip()
+    card["lifepoints"] = details_dict[3+limit_shift].text.strip() if PV_shift else None
+    card["mana_cost"] = extract_costs(details_dict[3 + total_shift])
+    card["components"] = extract_costs(details_dict[4 + total_shift])
+    card["effect"] = details_dict[5 + total_shift].text.strip()
+    card["illustration"] = details_dict[6 + total_shift].text.strip()
+    card["flavor_text"] = details_dict[7 + total_shift].text.strip()
+    card["extension"] = details_dict[8 + total_shift].text.strip()
     card["notes"] = [
         notes.text
         for notes in card_soup.find("table", class_="table").find_all("td")
