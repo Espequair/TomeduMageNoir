@@ -1,0 +1,12 @@
+#searchbar {
+  background: grey;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+:root {
+    --height-of-nav : 50px
+}
+body {
+    padding-top: --height-of-nav;
+}
