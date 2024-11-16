@@ -5,14 +5,28 @@
 </script>
 
 <nav id="searchbar">
-    <div>
+    <div class="search-category">
         {#each elements as element}
-            <div id="button-{element}">
-                <input type="checkbox" class="check" />{element}
+            <div class="search-element">
+                <input type="checkbox"/>{element}
             </div>
         {/each}
     </div>
-    <div></div>
+    <div class="search-category">
+        {#each elements as element}
+            <div class="search-element">
+                {element} <input id="{element}-comparison" type="text">
+            </div>
+        {/each}
+    </div>
+    <div class="search-category">
+        <div class="search-element">
+            Terme de recherche <input id="search-bar" type="text">
+        </div>
+    </div>
+    <div class="search-category">
+        <input id="search-button" class="search-element" type="submit" value="Search">
+    </div>
 </nav>
 
 <h1>Ma collection</h1>

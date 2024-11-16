@@ -1,6 +1,19 @@
 #searchbar {
-  background: grey;
   position: sticky;
   top: 0;
   width: 100%;
+}
+.search-category {
+    width: 100%;
+    border-style: solid;
+    margin: 5px;
+    padding: 5px
+}
+#searchbar {
+    background-color: #000000;
+}
+.search-element {
+    margin: 5px;
+    background-color: white;
+    display: inline-block;
 }
