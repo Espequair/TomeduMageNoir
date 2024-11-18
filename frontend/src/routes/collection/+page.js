@@ -32,5 +32,5 @@ export function load() {
   const filtered_cards =    filterBy(cards, card=>1)
   const sorted_cards =      sortBy(filtered_cards, card => card.name)
   const grouped_by_cards =  groupBy(sorted_cards, card => card.element)
-  return {cards: grouped_by_cards};
+  return {cards: cards};
 }

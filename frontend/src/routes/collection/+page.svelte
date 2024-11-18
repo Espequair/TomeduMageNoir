@@ -1,53 +1,92 @@
-<script>
-    let { data } = $props();
-    let elements = ["Végétal", "Feu", "Air", "Eau", "Minéral", "Arcane"];
-    //console.log(data.cards)
-</script>
+    <script>
+        import EqualitySelector from "./EqualitySelector.svelte";
 
-<nav id="searchbar">
-    <div class="search-category">
-        {#each elements as element}
-            <div class="search-element">
-                <input type="checkbox"/>{element}
-            </div>
-        {/each}
-    </div>
-    <div class="search-category">
-        {#each elements as element}
-            <div class="search-element">
-                {element} <input id="{element}-comparison" type="text">
-            </div>
-        {/each}
-    </div>
-    <div class="search-category">
-        <div class="search-element">
-            Terme de recherche <input id="search-bar" type="text">
-        </div>
-    </div>
-    <div class="search-category">
-        <input id="search-button" class="search-element" type="submit" value="Search">
-    </div>
-</nav>
+        let { data } = $props();
+        let filter = $state("")
+        let elements = ["Végétal", "Feu", "Air", "Eau", "Minéral", "Arcane"];
+        function updateFilter(){
+            filter = document.getElementById("myInput")?.value;
+        }
+        /**
+     * @param {string} [toBeCleaned]
+     */
+        function removeAccents(toBeCleaned){
+            return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        }
+    </script>
 
-<h1>Ma collection</h1>
-
-<ul id="categories">
-    {#each Object.entries(data.cards) as [category_name, arr]}
-        <li>{category_name}</li>
-        <ul>
-            {#each arr as card}
-                <li>
-                    <a href="/card/{card.slug}">{card.name}</a>
-                </li>
-            {:else}
-                category {category_name} is empty
+    <nav id="searchbar">
+        <div class="search-category">
+            {#each elements as element}
+                <div class="search-element">
+                    <input type="checkbox"/>{element}
+                </div>
             {/each}
-        </ul>
-    {:else}
-        categories is empty
-    {/each}
-</ul>
+        </div>
+        <div class="search-category">
+            {#each elements as element}
+                <div class="search-element">
+                    {element} 
+                    <EqualitySelector/>
+                    <input id="{element}-comparison" type="text" pattern="[0-9]*|[xX]" size="4">
+                </div>
+            {/each}
+        </div>
+        <div class="search-category">
+            <div class="search-element">
+                Terme de recherche <input id="myInput" onkeyup={updateFilter} type="text">
+            </div>
+        </div>
+        <div class="search-category">
+            <input id="search-button" class="search-element" type="submit" value="Search">
+        </div>
+    </nav>
 
-<style>
-    @import "./styles.css";
-</style>
+    <h1>Ma collection</h1>
+
+    <table id="cardsTable">
+        <thead>
+            <tr class="header">
+            <th>Name</th>
+            <th>Element</th>
+            <th>Mana</th>
+            <th>Components</th>
+            </tr>
+        </thead>
+        <tbody>
+            {#each data.cards as card}
+            {#if removeAccents(card.name).toUpperCase().includes(removeAccents(filter.toUpperCase()))}
+            <tr>
+                <td>
+                    {card.name}
+                </td>
+                <td>
+                    {card.element}
+                </td>
+                <td>
+                    
+                    <ul style="list-style-type:none">
+                    {#each Object.entries(card.mana_cost) as [a, b]}
+                        <li>
+                        {b} {a}
+                        </li>
+                    {/each}
+                    </ul>
+                </td>
+                <td>
+                    <ul style="list-style-type:none">
+                    {#each Object.entries(card.components) as [a, b]}
+                        <li>{b} {a}</li>
+                    {/each}
+                    </ul>
+                </td>
+                
+            </tr>
+            {/if}
+        {/each}
+        </tbody>
+    </table>
+
+    <style>
+        @import "./styles.css";
+    </style>
