@@ -115,7 +115,7 @@ def extract_card_details_from_file(file_name: str,
         "table", class_="card-details-infos-table").find_all("tr")
     details_dict = []
     PV_shift = False
-    limit_shift=False
+    limit_shift = False
     for details in details_table:
       rows = details.find_all("td")
       if len(rows) < 2:
@@ -138,10 +138,15 @@ def extract_card_details_from_file(file_name: str,
     card["competitive_limit"] = 4
     card["other_languages"] = {}
     card["name"] = details_dict[0].text.strip()
-    name = card["name"]
     card["element"] = details_dict[1 + limit_shift].text.strip()
-    card["type"] = details_dict[2 + limit_shift].text.strip()
-    card["lifepoints"] = details_dict[3+limit_shift].text.strip() if PV_shift else None
+    type = details_dict[2 + limit_shift].text.strip()
+    type = type.replace(":", "-").split("-")
+    card["type"] = type[0].strip()
+    card["subtype"] = ""
+    if len(type) > 1:
+      card["subtype"] = type[1].strip()
+    card["lifepoints"] = details_dict[
+        3 + limit_shift].text.strip() if PV_shift else None
     card["mana_cost"] = extract_costs(details_dict[3 + total_shift])
     card["components"] = extract_costs(details_dict[4 + total_shift])
     card["effect"] = details_dict[5 + total_shift].text.strip()
@@ -180,12 +185,14 @@ def get_images(in_file_name: str = "cards_catalog.json",
     card_catalog = json.loads(file.read())
   print(card_catalog)
   for card in card_catalog:
-    with open(f"{cards_image_folder_name}{card['slug']}.png","wb") as card_image_file:
+    with open(f"{cards_image_folder_name}{card['slug']}.png",
+              "wb") as card_image_file:
       print("downloading image for " +
-          f"{cards_image_folder_name}{card['slug']}")
+            f"{cards_image_folder_name}{card['slug']}")
       card_request = requests.get(card["mn_image_link"])
       card_image_file.write(card_request.content)
     sleep(1)
+
 
 def get_pictograms(pictogram_folder_name: str = "pict"):
   """
@@ -195,9 +202,11 @@ def get_pictograms(pictogram_folder_name: str = "pict"):
     mkdir(pictogram_folder_name)
   elements = ["fire", "air", "mineral", "arcane", "vegetal", "water"]
   for e in elements:
-    with open(f"{pictogram_folder_name}/{e}_icon.png","wb") as pict_file:
-      pict_request = requests.get(f"https://magenoir.com/img/mage-noir/pictograms/{e}_icon.png")
+    with open(f"{pictogram_folder_name}/{e}_icon.png", "wb") as pict_file:
+      pict_request = requests.get(
+          f"https://magenoir.com/img/mage-noir/pictograms/{e}_icon.png")
       pict_file.write(pict_request.content)
+
 
 def do_everything(workspace="workspace"):
   if not access(workspace, F_OK):
