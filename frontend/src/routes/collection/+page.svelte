@@ -1,94 +1,90 @@
-    <script lang="ts">
-        import EqualitySelector from "./EqualitySelector.svelte";
+<script>
+    let { data } = $props();
+    let cards = data.cards;
+	let filter_options = $state({name: ""});
+	function removeAccents(toBeCleaned){
+	  return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  }
+	const type_list = cards.reduce((total, item) => total.add(item.type), new Set());
+	let subtype_list = cards.reduce((total, item) => total.add(item.subtype), new Set());
+	subtype_list.delete("")
+	const element_list = cards.reduce((total, item) => total.add(item.element), new Set());
+	function filter_card(card) {
+		let is_included = true;
+		is_included &= removeAccents(card.name).toUpperCase().includes(removeAccents(filter_options["name"].toUpperCase()))
+		is_included &= card.type === filter_options["type"] || filter_options["type"] === "everything"
+		is_included &= card.element === filter_options["element"] || filter_options["element"] === "everything"
+		return is_included;
+	}
+</script>
+<style>
+    @import "./styles.css";
+</style>
 
-        let { data } = $props();
-        let filter = $state("")
-        let sort_order : string= $state("element")
-        const sorts = {
-            "name" : "name",
-            "element" : "element"
-        }
-        const elements = ["Végétal", "Feu", "Air", "Eau", "Minéral", "Arcane"];
-        function updateFilter(){
-            filter = document.getElementById("myInput")?.value;
-        }
-        function removeAccents(toBeCleaned: string){
-            return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        }
-    </script>
+<input type="text" id="myInput" bind:value={filter_options["name"]} placeholder="Search for names..">
 
-    <nav id="searchbar">
-        <div class="search-category">
-            {#each elements as element}
-                <div class="search-element">
-                    <input type="checkbox"/>{element}
-                </div>
-            {/each}
-        </div>
-        <div class="search-category">
-            {#each elements as element}
-                <div class="search-element">
-                    {element} 
-                    <EqualitySelector/>
-                    <input id="{element}-comparison" type="text" pattern="[0-9]*|[xX]" size="4">
-                </div>
-            {/each}
-        </div>
-        <div class="search-category">
-            <div class="search-element">
-                Terme de recherche <input id="myInput" onkeyup={updateFilter} type="text">
-            </div>
-        </div>
-        <div class="search-category">
-            <input id="search-button" class="search-element" type="submit" value="Search">
-        </div>
-    </nav>
+<select bind:value={filter_options["type"]}>
+		<option value="everything" selected> All Types </option>
+	{#each type_list as type}
+		<option value="{type}">{type}</option>
+	{/each}
+</select>
+<select bind:value={filter_options["element"]}>
+		<option value="everything" selected> All Elements </option>
+	{#each element_list as element}
+		<option value="{element}">{element}</option>
+	{/each}
+</select>
+<table id="myTable">
+	<thead>
+	<tr class="header">
+		<th>Name</th>
+		<th>Type</th>
+    <th>Element</th>
+    <th>Mana</th>
+    <th>Components</th>
+		<th>Effect</th>
+	</tr>
+	</thead>
+	<tbody>
+	
+{#each cards as card}
+	{#if filter_card(card)}
+	<tr>
+		<td>
+			{card.name}
+		</td>
+		<td>
+			{card.type} {card.subtype}
+		</td>
+		
+		<td>
+			{card.element}
+		</td>
+		<td>
+			<ul class="noBullets">
+			{#each Object.entries(card.mana_cost) as [a, b]}
+				<li>
+				{b} {a}
+				</li>
+			{/each}
+			</ul>
+		</td>
+		<td>
+			<ul class="noBullets">
+			{#each Object.entries(card.components) as [a, b]}
+				<li>{b} {a}</li>
+			{/each}
+			</ul>
+		</td>
+		<td>
+			{card.effect}
+		</td>
+		
+	</tr>
+	{/if}
+{/each}
 
-    <h1>Ma collection</h1>
-
-    <table id="cardsTable">
-        <thead>
-            <tr class="header">
-            <th>Name</th>
-            <th>Element</th>
-            <th>Mana</th>
-            <th>Components</th>
-            </tr>
-        </thead>
-        <tbody>
-            {#each data.cards.toSorted((card_a, card_b) => (card_a[sort_order].localeCompare(card_b[sort_order]))) as card}
-            {#if removeAccents(card.name).toUpperCase().includes(removeAccents(filter.toUpperCase()))}
-            <tr>
-                <td>
-                    {card.name}
-                </td>
-                <td>
-                    {card.element}
-                </td>
-                <td>
-                    
-                    <ul style="list-style-type:none">
-                    {#each Object.entries(card.mana_cost) as [a, b]}
-                        <li>
-                        {b} {a}
-                        </li>
-                    {/each}
-                    </ul>
-                </td>
-                <td>
-                    <ul style="list-style-type:none">
-                    {#each Object.entries(card.components) as [a, b]}
-                        <li>{b} {a}</li>
-                    {/each}
-                    </ul>
-                </td>
-                
-            </tr>
-            {/if}
-        {/each}
-        </tbody>
-    </table>
-
-    <style>
-        @import "./styles.css";
-    </style>
+		</tbody>
+	
+</table>
