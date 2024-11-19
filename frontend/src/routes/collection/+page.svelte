@@ -1,16 +1,18 @@
-    <script>
+    <script lang="ts">
         import EqualitySelector from "./EqualitySelector.svelte";
 
         let { data } = $props();
         let filter = $state("")
-        let elements = ["Végétal", "Feu", "Air", "Eau", "Minéral", "Arcane"];
+        let sort_order : string= $state("element")
+        const sorts = {
+            "name" : "name",
+            "element" : "element"
+        }
+        const elements = ["Végétal", "Feu", "Air", "Eau", "Minéral", "Arcane"];
         function updateFilter(){
             filter = document.getElementById("myInput")?.value;
         }
-        /**
-     * @param {string} [toBeCleaned]
-     */
-        function removeAccents(toBeCleaned){
+        function removeAccents(toBeCleaned: string){
             return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         }
     </script>
@@ -54,7 +56,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each data.cards as card}
+            {#each data.cards.toSorted((card_a, card_b) => (card_a[sort_order].localeCompare(card_b[sort_order]))) as card}
             {#if removeAccents(card.name).toUpperCase().includes(removeAccents(filter.toUpperCase()))}
             <tr>
                 <td>
