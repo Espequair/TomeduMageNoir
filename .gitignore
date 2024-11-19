@@ -7,3 +7,4 @@ cards_*.js
 uv.lock
 .replit
 workspace/
+node_modules/
