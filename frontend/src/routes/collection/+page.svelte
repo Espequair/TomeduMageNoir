@@ -1,7 +1,7 @@
 <script>
     let { data } = $props();
     let cards = data.cards;
-	let filter_options = $state({name: ""});
+	let filter_options = $state({name: "", effect: ""});
 	function removeAccents(toBeCleaned){
 	  return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   }
@@ -11,6 +11,7 @@
 	const element_list = cards.reduce((total, item) => total.add(item.element), new Set());
 	function filter_card(card) {
 		let is_included = true;
+		is_included &= removeAccents(card.effect).toUpperCase().includes(removeAccents(filter_options["effect"].toUpperCase()))
 		is_included &= removeAccents(card.name).toUpperCase().includes(removeAccents(filter_options["name"].toUpperCase()))
 		is_included &= card.type === filter_options["type"] || filter_options["type"] === "everything"
 		is_included &= card.element === filter_options["element"] || filter_options["element"] === "everything"
@@ -21,7 +22,8 @@
     @import "./styles.css";
 </style>
 
-<input type="text" id="myInput" bind:value={filter_options["name"]} placeholder="Search for names..">
+<input type="text" id="myEffectInput" bind:value={filter_options["name"]} placeholder="Search for names..">
+<input type="text" id="myTextInput" bind:value={filter_options["effect"]} placeholder="Search for text..">
 
 <select bind:value={filter_options["type"]}>
 		<option value="everything" selected> All Types </option>
