@@ -38,12 +38,14 @@ jobs:
           ls -al
           ls -al ./src
           npm run build
+          ls -al
+
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
  # this should match the `pages` option in your adapter-static options
-          path: 'build/'
+          path: 'frontend/dist/'
 
   deploy:
     needs: build_site
