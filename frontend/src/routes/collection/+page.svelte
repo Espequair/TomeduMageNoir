@@ -44,44 +44,46 @@
     }
 </script>
 
-<div id="search">
-    <input
-        type="text"
-        class="myInput"
-        id="myEffectInput"
-        bind:value={filter_options["name"]}
-        placeholder="Search for names.."
-    />
-    <input
+<table id="myTable">
+    <thead id="searchGroup">
+        <tr>
+            <th>Name
+                <input
+                type="text"
+                class="myInput"
+                id="myEffectInput"
+                bind:value={filter_options["name"]}
+                placeholder="Search for names.."
+            />
+            </th>
+            <th>
+                Type <select bind:value={filter_options["type"]}>
+                    <option value="everything" selected> All Types </option>
+                    {#each type_list as type}
+                        <option value={type}>{type}</option>
+                    {/each}
+                </select></th
+            >
+            <th>
+                Element
+                <select bind:value={filter_options["element"]}>
+                    <option value="everything" selected> All Elements </option>
+                    {#each element_list as element}
+                        <option value={element}>{element}</option>
+                    {/each}
+                </select></th
+            >
+            <th>Mana</th>
+            <th>Components</th>
+            <th>Effect
+                <input
         type="text"
         class="myInput"
         id="myTextInput"
         bind:value={filter_options["effect"]}
         placeholder="Search for text.."
     />
-
-    <select bind:value={filter_options["type"]}>
-        <option value="everything" selected> All Types </option>
-        {#each type_list as type}
-            <option value={type}>{type}</option>
-        {/each}
-    </select>
-    <select bind:value={filter_options["element"]}>
-        <option value="everything" selected> All Elements </option>
-        {#each element_list as element}
-            <option value={element}>{element}</option>
-        {/each}
-    </select>
-</div>
-<table id="myTable">
-    <thead>
-        <tr class="header">
-            <th>Name</th>
-            <th>Type</th>
-            <th>Element</th>
-            <th>Mana</th>
-            <th>Components</th>
-            <th>Effect</th>
+            </th>
         </tr>
     </thead>
     <tbody>

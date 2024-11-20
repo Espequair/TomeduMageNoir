@@ -7,17 +7,20 @@
     /* Remove margins */
 }
 
+#searchGroup {
+    background: #999999;
+    border: 5px solid;
+    position: sticky;
+    top: 0px;
+}
+thead td {
+    border-left: 1px solid
+}
 .myInput {
-    background-position: 10px 12px;
-    /* Position the search icon */
-    background-repeat: no-repeat;
-    /* Do not repeat the icon image */
     width: 100%;
     /* Full-width */
     font-size: 16px;
     /* Increase font-size */
-    padding: 12px 20px 12px 40px;
-    /* Add some padding */
     border: 1px solid #ddd;
     /* Add a grey border */
     margin-bottom: 12px;
@@ -46,7 +49,7 @@
 }
 
 #myTable tr.header,
-#myTable tr:hover {
+#myTable tbody tr:hover {
     /* Add a grey background color to the table header and on hover */
     background-color: #f1f1f1;
 }
