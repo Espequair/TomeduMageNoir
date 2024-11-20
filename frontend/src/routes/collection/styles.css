@@ -3,7 +3,7 @@
   padding: 0; /* Remove padding */
   margin: 0; /* Remove margins */
 }
-#myInput {
+.myInput {
   background-position: 10px 12px; /* Position the search icon */
   background-repeat: no-repeat; /* Do not repeat the icon image */
   width: 100%; /* Full-width */
