@@ -36,6 +36,7 @@ jobs:
           BASE_PATH: '/${{ github.event.repository.name }}'
         run: |
           ls -al
+          ls -al ./src
           npm run build
           ls -al
 
@@ -44,7 +45,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
  # this should match the `pages` option in your adapter-static options
-          path: 'frontend/dist/'
+          path: 'frontend/build/'
 
   deploy:
     needs: build_site
