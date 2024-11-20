@@ -1,7 +1,6 @@
 cards_html/
 cards_*.json
 cards_*.js
-*.html
 *.pyc
 *.swp
 uv.lock
