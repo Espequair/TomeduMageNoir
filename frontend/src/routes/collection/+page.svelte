@@ -50,7 +50,7 @@
 	</thead>
 	<tbody>
 	
-{#each cards as card}
+{#each cards.toSorted((a,b)=>(a.name.localeCompare(b.name))) as card}
 	{#if filter_card(card)}
 	<tr>
 		<td>
