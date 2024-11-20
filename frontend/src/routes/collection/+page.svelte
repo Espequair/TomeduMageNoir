@@ -2,10 +2,6 @@
     let { data } = $props();
     let cards = data.cards;
 	let filter_options = $state({name: ""});
-	/**
-     * @param {string} toBeCleaned
-     * @returns {string}
-     */
 	function removeAccents(toBeCleaned){
 	  return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   }
@@ -15,9 +11,9 @@
 	const element_list = cards.reduce((total, item) => total.add(item.element), new Set());
 	function filter_card(card) {
 		let is_included = true;
-		is_included = is_included && removeAccents(card.name).toUpperCase().includes(removeAccents(filter_options["name"].toUpperCase()))
-		is_included = is_included && card.type === filter_options["type"] || filter_options["type"] === "everything"
-		is_included = is_included && card.element === filter_options["element"] || filter_options["element"] === "everything"
+		is_included &= removeAccents(card.name).toUpperCase().includes(removeAccents(filter_options["name"].toUpperCase()))
+		is_included &= card.type === filter_options["type"] || filter_options["type"] === "everything"
+		is_included &= card.element === filter_options["element"] || filter_options["element"] === "everything"
 		return is_included;
 	}
 </script>
@@ -56,7 +52,7 @@
 	{#if filter_card(card)}
 	<tr>
 		<td>
-			<a href="./card/{card.slug}">{card.name}</a>
+			{card.name}
 		</td>
 		<td>
 			{card.type} {card.subtype}
