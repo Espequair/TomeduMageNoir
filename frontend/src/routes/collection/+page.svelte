@@ -5,6 +5,14 @@
 	function removeAccents(toBeCleaned){
 	  return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   }
+	const slug_translator = {
+		"eau": "water",
+		"feu": "fire",
+		"mineral": "mineral",
+		"vegetal": "vegetal",
+		"arcane": "arcane",
+		"air": "air",
+	}
 	const type_list = cards.reduce((total, item) => total.add(item.type), new Set());
 	let subtype_list = cards.reduce((total, item) => total.add(item.subtype), new Set());
 	subtype_list.delete("")
@@ -54,7 +62,7 @@
 	{#if filter_card(card)}
 	<tr>
 		<td>
-			<a href="https://magenoir.com/collection/FR/{removeAccents(card.element).toLowerCase()}/{card.slug}.html">{card.name}</a>
+			<a href="https://magenoir.com/collection/FR/{slug_translator[removeAccents(card.element).toLowerCase()]}/{card.slug}.html">{card.name}</a>
 		</td>
 		<td>
 			{card.type} {card.subtype}
