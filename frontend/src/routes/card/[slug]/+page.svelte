@@ -1,10 +1,10 @@
 <script>
-  let {data} = $props();
-  let card = data.card
+    let { data } = $props();
+    let card = data.card;
 </script>
 
 <h2>{card.name}</h2>
-<img src="{card.mn_image_link}" alt="{card.name}" width=20%/>
+<img src={card.mn_image_link} alt={card.name} width="20%" />
 <h3>{card.element}</h3>
 <h4>Mana Cost</h4>
 <ul>
@@ -23,7 +23,7 @@
 <p>{card.effect}</p>
 <h4>Notes</h4>
 <ol>
-{#each card.notes as note}
-<li>{note}</li>
-{/each}
+    {#each card.notes as note}
+        <li>{note}</li>
+    {/each}
 </ol>

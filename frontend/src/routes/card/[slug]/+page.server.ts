@@ -8,5 +8,5 @@ export function load({ params }) {
 
     return {
         card
-  };
+    };
 };
