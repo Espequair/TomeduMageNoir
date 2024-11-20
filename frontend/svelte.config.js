@@ -19,7 +19,6 @@ const config = {
 			fallback: undefined,
 			precompress: false,
 			strict: true,
-            fallback: '404.html'
 		}),
         paths: {
 			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
@@ -27,6 +26,8 @@ const config = {
         prerender: {
             handleHttpError : 'warn',
             entries : [
+                "/",
+                "/collection",
                 "/card/Tourment-d-epines",
                 "/card/Meteore-du-desert",
                 "/card/Flamme-de-soufre",
