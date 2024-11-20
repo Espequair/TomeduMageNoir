@@ -29,16 +29,12 @@ jobs:
       - name: Install dependencies
         run: |
           ls -al
-          cd ./frontend
-          ls -al
           npm install
 
       - name: build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
         run: |
-          ls -al
-          cd ./frontend
           ls -al
           npm run build
 
