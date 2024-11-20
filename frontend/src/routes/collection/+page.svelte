@@ -52,7 +52,7 @@
 	{#if filter_card(card)}
 	<tr>
 		<td>
-			{card.name}
+			<a href="/card/{card.slug}}">{card.name}</a>
 		</td>
 		<td>
 			{card.type} {card.subtype}
