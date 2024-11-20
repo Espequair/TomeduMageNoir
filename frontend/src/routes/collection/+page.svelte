@@ -54,7 +54,7 @@
 	{#if filter_card(card)}
 	<tr>
 		<td>
-			<a href="https://magenoir.com/collection/FR/{removeAccents(card.element)}/{card.slug}">{card.name}</a>
+			<a href="https://magenoir.com/collection/FR/{removeAccents(card.element).toLowerCase()}/{card.slug}.html">{card.name}</a>
 		</td>
 		<td>
 			{card.type} {card.subtype}
