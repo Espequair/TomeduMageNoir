@@ -36,6 +36,7 @@ jobs:
           BASE_PATH: '/${{ github.event.repository.name }}'
         run: |
           ls -al
+          ls -al ./src
           npm run build
 
       - name: Upload Artifacts
