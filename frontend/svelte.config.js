@@ -19,7 +19,7 @@ const config = {
 			fallback: null,
 		}),
         paths: {
-			base: '/TomeDuMageNoir'
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 		},
         prerender: {
             handleHttpError : 'warn',
