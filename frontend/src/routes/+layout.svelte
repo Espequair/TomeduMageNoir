@@ -1,5 +1,5 @@
 <script>
-	let { children } = $props();
+    let { children } = $props();
     import { base } from '$app/paths';
 </script>
 
