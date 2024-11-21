@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
+    import { type Card } from "./+page.js";
     let { data } = $props();
-    let cards = data.cards;
-    let filter_options = $state({ name: "", effect: "" });
-    const slug_translator = {
+    let cards: Card[] = data.cards;
+    let filter_options: Record<string, string> = $state({
+        name: "",
+        effect: "",
+    });
+    const slug_translator: Record<string, string> = {
         eau: "water",
         feu: "fire",
         mineral: "mineral",
@@ -41,25 +45,18 @@
                 }
                 return collection;
             }, new Set()),
-        ].toSorted((a, b) => a.localeCompare(b)),
+        ].toSorted((a, b) => String(a).localeCompare(String(b))),
     );
 
-    /**
-     * @param {string} accented_string
-     */
-    function removeAccents(accented_string) {
+    function removeAccents(accented_string: string): string {
         return accented_string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
-    /**
-     * @param {string} unsanitized_string
-     */
-    function sanitize_string(unsanitized_string) {
+
+    function sanitize_string(unsanitized_string: string): string {
         return removeAccents(unsanitized_string).toLowerCase();
     }
-    /**
-     * @param {string} unsanitized_element
-     */
-    function sanitize_element(unsanitized_element) {
+
+    function sanitize_element(unsanitized_element: string): string {
         let san = sanitize_string(unsanitized_element);
         if (Object.keys(slug_translator).includes(san)) {
             return slug_translator[san];
@@ -67,26 +64,27 @@
             return san;
         }
     }
-    function filter_card(card) {
+
+    function filter_card(card: Card): boolean {
         let is_included = true;
-        is_included &= sanitize_string(card.effect).includes(
+        is_included &&= sanitize_string(card.effect).includes(
             sanitize_string(filter_options["effect"]),
         );
-        is_included &= sanitize_string(card.name).includes(
+        is_included &&= sanitize_string(card.name).includes(
             sanitize_string(filter_options["name"]),
         );
-        is_included &=
+        is_included &&=
             card.type === filter_options["type"] ||
             filter_options["type"] === "everything";
-        is_included &=
+        is_included &&=
             card.element === filter_options["element"] ||
             filter_options["element"] === "everything";
-        is_included &=
+        is_included &&=
             Object.keys(card.mana_cost)
                 .map((cost) => sanitize_element(cost))
                 .includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
-        is_included &=
+        is_included &&=
             Object.keys(card.components)
                 .map((cost) => sanitize_element(cost))
                 .includes(filter_options["comp_cost"]) ||
