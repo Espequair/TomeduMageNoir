@@ -2,8 +2,22 @@
     let { data } = $props();
     let cards = data.cards;
     let filter_options = $state({ name: "", effect: "" });
-    function removeAccents(toBeCleaned) {
-        return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    /**
+     * @param {string} accented_string
+     */
+    function removeAccents(accented_string) {
+        return accented_string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    /**
+     * @param {string} unsanitized_element
+     */
+     function sanitize_element(unsanitized_element){
+        let san = removeAccents(unsanitized_element).toLowerCase();
+        if (Object.keys(slug_translator).includes(san)){
+            return slug_translator[san];
+        } else {
+            return san;
+        }
     }
     const slug_translator = {
         "eau": "water",
@@ -26,12 +40,15 @@
         (collection, card) => collection.add(card.element),
         new Set(),
     );
+
     const mana_cost_list = cards.reduce((collection, card) => {
         for (const cost in card.mana_cost) {
-            collection.add(slug_translator[removeAccents(cost).toLowerCase()]);
+            collection.add(sanitize_element(cost));
         }
         return collection;
     }, new Set());
+    console.log(mana_cost_list)
+    mana_cost_list.delete(null);
     function filter_card(card) {
         let is_included = true;
         is_included &= removeAccents(card.effect)
@@ -47,8 +64,8 @@
             card.element === filter_options["element"] ||
             filter_options["element"] === "everything";
         is_included &=
-            Object.keys(card.mana_cost).includes(filter_options["mana"]) ||
-            filter_options["element"] === "everything";
+            Object.keys(card.mana_cost).map(cost=>sanitize_element(cost)).includes(filter_options["mana_cost"]) ||
+            filter_options["mana_cost"] === "everything";
         return is_included;
     }
 </script>
