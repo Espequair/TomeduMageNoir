@@ -2,10 +2,16 @@
     import { type Card } from "./+page.js";
     let { data } = $props();
     let cards: Card[] = data.cards;
-    let filter_options: Record<string, string> = $state({
+
+    let filter_options: { [k: string]: any } = $state({
         name: "",
         effect: "",
     });
+    let sort_order: [property: string, ascending: boolean] = $state([
+        "name",
+        true,
+    ]);
+    $inspect(sort_order);
     const slug_translator: Record<string, string> = {
         eau: "water",
         feu: "fire",
@@ -91,14 +97,59 @@
             filter_options["comp_cost"] === "everything";
         return is_included;
     }
+    function change_sort_order(property: string) {
+        return () => {
+            if (!sort_order[0].localeCompare(property)) {
+                sort_order[1] = !sort_order[1];
+            } else {
+                sort_order = [property, true];
+            }
+        };
+    }
+    function sum_costs(card: Card, property: keyof Card): number {
+        return Object.values(card[property]).reduce(
+            (accumulator: number, cost: number | string) => {
+                if (!(typeof cost).localeCompare("number")) {
+                    return accumulator + cost;
+                } else {
+                    return accumulator + 100;
+                }
+            },
+            0,
+        );
+    }
+    function sort_card_list_function() {
+        if (
+            !sort_order[0].localeCompare("name") ||
+            !sort_order[0].localeCompare("type") ||
+            !sort_order[0].localeCompare("element")
+        ) {
+            return (card_a: Card, card_b: Card) =>
+                (sort_order[1] * 2 - 1) *
+                card_a[sort_order[0]].localeCompare(card_b[sort_order[0]]);
+        } else if (
+            !sort_order[0].localeCompare("mana_cost") ||
+            !sort_order[0].localeCompare("components")
+        ) {
+            return (card_a: Card, card_b: Card) => {
+                let x =
+                    sum_costs(card_a, sort_order[0]) -
+                    sum_costs(card_b, sort_order[0]);
+                return x * -(sort_order[1] * 2 - 1);
+            };
+        }
+    }
 </script>
 
 <h2>Results {filtered_card_list.length}</h2>
+<h2>Sort {sort_order[0]} {sort_order[1]?"ascending":"descending"}</h2>
 <table id="myTable">
     <thead id="searchGroup">
         <tr>
             <th
-                >Name
+                ><button type="button" onclick={change_sort_order("name")}
+                    >Name</button
+                >
                 <input
                     type="text"
                     class="myInput"
@@ -108,7 +159,10 @@
                 />
             </th>
             <th>
-                Type <select bind:value={filter_options["type"]}>
+                <button type="button" onclick={change_sort_order("type")}
+                    >Type</button
+                >
+                <select bind:value={filter_options["type"]}>
                     <option value="everything" selected> All Types </option>
                     {#each type_list as type}
                         <option value={type}>{type}</option>
@@ -116,7 +170,9 @@
                 </select>
             </th>
             <th>
-                Element
+                <button type="button" onclick={change_sort_order("element")}
+                    >Element</button
+                >
                 <select bind:value={filter_options["element"]}>
                     <option value="everything" selected> All Elements </option>
                     {#each element_list as element}
@@ -125,7 +181,9 @@
                 </select>
             </th>
             <th>
-                Mana Cost
+                <button type="button" onclick={change_sort_order("mana_cost")}
+                    >Mana Cost</button
+                >
                 <select bind:value={filter_options["mana_cost"]}>
                     <option value="everything" selected> Any mana cost </option>
                     {#each mana_cost_list as mana_cost}
@@ -134,7 +192,9 @@
                 </select>
             </th>
             <th
-                >Components
+                ><button type="button" onclick={change_sort_order("components")}
+                    >Components</button
+                >
                 <select bind:value={filter_options["comp_cost"]}>
                     <option value="everything" selected>
                         Any component cost
@@ -157,7 +217,7 @@
         </tr>
     </thead>
     <tbody>
-        {#each filtered_card_list.toSorted( (a, b) => a.name.localeCompare(b.name), ) as card}
+        {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
             <tr>
                 <td>
                     <a
