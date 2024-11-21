@@ -94,7 +94,8 @@
                         <a
                             href="https://magenoir.com/collection/FR/{slug_translator[
                                 removeAccents(card.element).toLowerCase()
-                            ]}/{card.slug}.html">{card.name}</a
+                            ]}/{card.slug}.html"
+                            target="_blank">{card.name}</a
                         >
                     </td>
                     <td>
