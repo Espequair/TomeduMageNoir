@@ -138,17 +138,25 @@
             };
         }
     }
+    function display_correct_symbol(property: string){
+        if (!property.localeCompare(sort_order[0])) {
+            return sort_order[1] ? "▲" : "▼";
+        }
+    }
 </script>
 
 <h2>Results {filtered_card_list.length}</h2>
-<h2>Sort {sort_order[0]} {sort_order[1]?"ascending":"descending"}</h2>
+<h2>Sort {sort_order[0]} {sort_order[1] ? "ascending" : "descending"}</h2>
+Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont ordonnés
 <table id="myTable">
     <thead id="searchGroup">
         <tr>
-            <th
-                ><button type="button" onclick={change_sort_order("name")}
-                    >Name</button
-                >
+            <th>
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                 <h2 onclick={change_sort_order("name")}>
+                    Name {display_correct_symbol("name")}
+                </h2>
                 <input
                     type="text"
                     class="myInput"
@@ -158,9 +166,11 @@
                 />
             </th>
             <th>
-                <button type="button" onclick={change_sort_order("type")}
-                    >Type</button
-                >
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                <h2 onclick={change_sort_order("type")}>
+                    Type {display_correct_symbol("type")}
+                </h2>
                 <select bind:value={filter_options["type"]}>
                     <option value="everything" selected> All Types </option>
                     {#each type_list as type}
@@ -169,9 +179,11 @@
                 </select>
             </th>
             <th>
-                <button type="button" onclick={change_sort_order("element")}
-                    >Element</button
-                >
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                <h2 onclick={change_sort_order("element")}>
+                    Element {display_correct_symbol("element")}
+                </h2>
                 <select bind:value={filter_options["element"]}>
                     <option value="everything" selected> All Elements </option>
                     {#each element_list as element}
@@ -180,9 +192,11 @@
                 </select>
             </th>
             <th>
-                <button type="button" onclick={change_sort_order("mana_cost")}
-                    >Mana Cost</button
-                >
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                <h2 onclick={change_sort_order("mana_cost")}>
+                    Mana Cost {display_correct_symbol("mana_cost")}
+                </h2>
                 <select bind:value={filter_options["mana_cost"]}>
                     <option value="everything" selected> Any mana cost </option>
                     {#each mana_cost_list as mana_cost}
@@ -191,9 +205,15 @@
                 </select>
             </th>
             <th
-                ><button type="button" onclick={change_sort_order("components")}
-                    >Components</button
+                
                 >
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                <h2
+                    onclick={change_sort_order("components")}
+                >
+                    Components {display_correct_symbol("components")}
+                </h2>
                 <select bind:value={filter_options["comp_cost"]}>
                     <option value="everything" selected>
                         Any component cost
