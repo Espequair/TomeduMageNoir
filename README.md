@@ -24,6 +24,11 @@ Il y a des incohérences mineures dans la façon dont les cartes sont enregistr�
 | **Equipement** | [Equipement - Type](https://magenoir.com/collection/FR/air/Baguette_des_courants_d_air.html)  | [Equipement : Type](https://magenoir.com/collection/FR/air/Bottes-statiques.html) |
 | **Permanents** | [Utilise PV](https://magenoir.com/collection/FR/vegetal/Arbre-mort.html) | [Utilise HP](https://magenoir.com/collection/FR/vegetal/Fleur-fractale.html)|
 | **Noms**       | [En MAJUSCULES](https://magenoir.com/collection/FR/vegetal/Arbre-mort.html)      | [En minuscules](https://magenoir.com/collection/FR/vegetal/Fleur-fractale.html)     |
+| **Rituels**       | [Type Rituel](https://magenoir.com/collection/FR/vegetal/Rituel-de-decomposition.html)      | [Type Sort](https://magenoir.com/collection/FR/mineral/Rituel-d-exuviation.html)     |
+| **Sort a cout mana 0**       | [\<ul>Aucun<\ul>](https://magenoir.com/collection/FR/water/Gouttelette.html)      | [\<ul>\<li>Aucun<\li><\ul>](https://magenoir.com/collection/FR/water/Brinicle.html)     |
+
+### Autres
+[Oasis](https://magenoir.com/collection/FR/mineral/Oasis.html) a une coquille dans son cout en mana
 
 
 ## SCRIPTS
