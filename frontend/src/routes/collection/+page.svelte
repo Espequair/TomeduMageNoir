@@ -11,21 +11,21 @@
     /**
      * @param {string} unsanitized_element
      */
-     function sanitize_element(unsanitized_element){
+    function sanitize_element(unsanitized_element) {
         let san = removeAccents(unsanitized_element).toLowerCase();
-        if (Object.keys(slug_translator).includes(san)){
+        if (Object.keys(slug_translator).includes(san)) {
             return slug_translator[san];
         } else {
             return san;
         }
     }
     const slug_translator = {
-        "eau": "water",
-        "feu": "fire",
-        "mineral": "mineral",
-        "vegetal": "vegetal",
-        "arcane": "arcane",
-        "air": "air",
+        eau: "water",
+        feu: "fire",
+        mineral: "mineral",
+        vegetal: "vegetal",
+        arcane: "arcane",
+        air: "air",
     };
     const type_list = cards.reduce(
         (collection, card) => collection.add(card.type),
@@ -53,7 +53,6 @@
         }
         return collection;
     }, new Set());
-    console.log(comp_cost_list)
 
     mana_cost_list.delete(null);
     function filter_card(card) {
@@ -70,12 +69,16 @@
         is_included &=
             card.element === filter_options["element"] ||
             filter_options["element"] === "everything";
-            is_included &=
-            Object.keys(card.mana_cost).map(cost=>sanitize_element(cost)).includes(filter_options["mana_cost"]) ||
+        is_included &=
+            Object.keys(card.mana_cost)
+                .map((cost) => sanitize_element(cost))
+                .includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
-            /*is_included &=
-            Object.keys(card.comp_cost).map(cost=>sanitize_element(cost)).includes(filter_options["comp_cost"]) ||
-            filter_options["comp_cost"] === "everything";*/
+        is_included &=
+            Object.keys(card.components)
+                .map((cost) => sanitize_element(cost))
+                .includes(filter_options["comp_cost"]) ||
+            filter_options["comp_cost"] === "everything";
         return is_included;
     }
 </script>
@@ -119,13 +122,16 @@
                     {/each}
                 </select>
             </th>
-            <th>Components
-            <select bind:value={filter_options["comp_cost"]}>
-                <option value="everything" selected> Any component cost </option>
-                {#each comp_cost_list as comp_cost}
-                    <option value={comp_cost}>{comp_cost}</option>
-                {/each}
-            </select>
+            <th
+                >Components
+                <select bind:value={filter_options["comp_cost"]}>
+                    <option value="everything" selected>
+                        Any component cost
+                    </option>
+                    {#each comp_cost_list as comp_cost}
+                        <option value={comp_cost}>{comp_cost}</option>
+                    {/each}
+                </select>
             </th>
             <th>
                 Effect
@@ -145,7 +151,9 @@
                 <tr>
                     <td>
                         <a
-                            href="https://magenoir.com/collection/FR/{sanitize_element(card.element)}/{card.slug}.html"
+                            href="https://magenoir.com/collection/FR/{sanitize_element(
+                                card.element,
+                            )}/{card.slug}.html"
                             target="_blank">{card.name}</a
                         >
                     </td>
