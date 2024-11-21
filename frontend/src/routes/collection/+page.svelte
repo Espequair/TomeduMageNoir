@@ -47,12 +47,12 @@
         }
         return collection;
     }, new Set());
-    const comp_cost_list = cards.reduce((collection, card) => {
+    const comp_cost_list = [...cards.reduce((collection, card) => {
         for (const cost in card.components) {
             collection.add(sanitize_element(cost));
         }
         return collection;
-    }, new Set());
+    }, new Set())].toSorted((a,b)=>a.localeCompare(b));
 
     mana_cost_list.delete(null);
     function filter_card(card) {
