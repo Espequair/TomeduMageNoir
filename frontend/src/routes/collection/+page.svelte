@@ -11,7 +11,6 @@
         "name",
         true,
     ]);
-    $inspect(sort_order);
     const slug_translator: Record<string, string> = {
         eau: "water",
         feu: "fire",
