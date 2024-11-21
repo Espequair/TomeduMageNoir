@@ -47,7 +47,14 @@
         }
         return collection;
     }, new Set());
-    console.log(mana_cost_list)
+    const comp_cost_list = cards.reduce((collection, card) => {
+        for (const cost in card.components) {
+            collection.add(sanitize_element(cost));
+        }
+        return collection;
+    }, new Set());
+    console.log(comp_cost_list)
+
     mana_cost_list.delete(null);
     function filter_card(card) {
         let is_included = true;
@@ -63,9 +70,12 @@
         is_included &=
             card.element === filter_options["element"] ||
             filter_options["element"] === "everything";
-        is_included &=
+            is_included &=
             Object.keys(card.mana_cost).map(cost=>sanitize_element(cost)).includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
+            /*is_included &=
+            Object.keys(card.comp_cost).map(cost=>sanitize_element(cost)).includes(filter_options["comp_cost"]) ||
+            filter_options["comp_cost"] === "everything";*/
         return is_included;
     }
 </script>
@@ -109,7 +119,14 @@
                     {/each}
                 </select>
             </th>
-            <th>Components</th>
+            <th>Components
+            <select bind:value={filter_options["comp_cost"]}>
+                <option value="everything" selected> Any component cost </option>
+                {#each comp_cost_list as comp_cost}
+                    <option value={comp_cost}>{comp_cost}</option>
+                {/each}
+            </select>
+            </th>
             <th>
                 Effect
                 <input
@@ -128,9 +145,7 @@
                 <tr>
                     <td>
                         <a
-                            href="https://magenoir.com/collection/FR/{slug_translator[
-                                removeAccents(card.element).toLowerCase()
-                            ]}/{card.slug}.html"
+                            href="https://magenoir.com/collection/FR/{sanitize_element(card.element)}/{card.slug}.html"
                             target="_blank">{card.name}</a
                         >
                     </td>
