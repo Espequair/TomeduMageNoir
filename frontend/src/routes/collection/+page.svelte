@@ -2,23 +2,6 @@
     let { data } = $props();
     let cards = data.cards;
     let filter_options = $state({ name: "", effect: "" });
-    /**
-     * @param {string} accented_string
-     */
-    function removeAccents(accented_string) {
-        return accented_string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-    /**
-     * @param {string} unsanitized_element
-     */
-    function sanitize_element(unsanitized_element) {
-        let san = removeAccents(unsanitized_element).toLowerCase();
-        if (Object.keys(slug_translator).includes(san)) {
-            return slug_translator[san];
-        } else {
-            return san;
-        }
-    }
     const slug_translator = {
         eau: "water",
         feu: "fire",
@@ -27,42 +10,71 @@
         arcane: "arcane",
         air: "air",
     };
-    const type_list = cards.reduce(
-        (collection, card) => collection.add(card.type),
-        new Set(),
+    let filtered_card_list = $derived(
+        cards.filter((card) => filter_card(card)),
     );
-    let subtype_list = cards.reduce(
-        (collection, card) => collection.add(card.subtype),
-        new Set(),
+    let type_list = $derived(
+        filtered_card_list.reduce(
+            (collection, card) => collection.add(card.type),
+            new Set(),
+        ),
     );
-    subtype_list.delete("");
-    const element_list = cards.reduce(
-        (collection, card) => collection.add(card.element),
-        new Set(),
+    let element_list = $derived(
+        filtered_card_list.reduce(
+            (collection, card) => collection.add(card.element),
+            new Set(),
+        ),
+    );
+    let mana_cost_list = $derived(
+        filtered_card_list.reduce((collection, card) => {
+            for (const cost in card.mana_cost) {
+                collection.add(sanitize_element(cost));
+            }
+            return collection;
+        }, new Set()),
+    );
+    let comp_cost_list = $derived(
+        [
+            ...filtered_card_list.reduce((collection, card) => {
+                for (const cost in card.components) {
+                    collection.add(sanitize_element(cost));
+                }
+                return collection;
+            }, new Set()),
+        ].toSorted((a, b) => a.localeCompare(b)),
     );
 
-    const mana_cost_list = cards.reduce((collection, card) => {
-        for (const cost in card.mana_cost) {
-            collection.add(sanitize_element(cost));
+    /**
+     * @param {string} accented_string
+     */
+    function removeAccents(accented_string) {
+        return accented_string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    /**
+     * @param {string} unsanitized_string
+     */
+    function sanitize_string(unsanitized_string) {
+        return removeAccents(unsanitized_string).toLowerCase();
+    }
+    /**
+     * @param {string} unsanitized_element
+     */
+    function sanitize_element(unsanitized_element) {
+        let san = sanitize_string(unsanitized_element);
+        if (Object.keys(slug_translator).includes(san)) {
+            return slug_translator[san];
+        } else {
+            return san;
         }
-        return collection;
-    }, new Set());
-    const comp_cost_list = [...cards.reduce((collection, card) => {
-        for (const cost in card.components) {
-            collection.add(sanitize_element(cost));
-        }
-        return collection;
-    }, new Set())].toSorted((a,b)=>a.localeCompare(b));
-
-    mana_cost_list.delete(null);
+    }
     function filter_card(card) {
         let is_included = true;
-        is_included &= removeAccents(card.effect)
-            .toUpperCase()
-            .includes(removeAccents(filter_options["effect"].toUpperCase()));
-        is_included &= removeAccents(card.name)
-            .toUpperCase()
-            .includes(removeAccents(filter_options["name"].toUpperCase()));
+        is_included &= sanitize_string(card.effect).includes(
+            sanitize_string(filter_options["effect"]),
+        );
+        is_included &= sanitize_string(card.name).includes(
+            sanitize_string(filter_options["name"]),
+        );
         is_included &=
             card.type === filter_options["type"] ||
             filter_options["type"] === "everything";
@@ -83,6 +95,7 @@
     }
 </script>
 
+<h2>Results {filtered_card_list.length}</h2>
 <table id="myTable">
     <thead id="searchGroup">
         <tr>
@@ -146,47 +159,45 @@
         </tr>
     </thead>
     <tbody>
-        {#each cards.toSorted((a, b) => a.name.localeCompare(b.name)) as card}
-            {#if filter_card(card)}
-                <tr>
-                    <td>
-                        <a
-                            href="https://magenoir.com/collection/FR/{sanitize_element(
-                                card.element,
-                            )}/{card.slug}.html"
-                            target="_blank">{card.name}</a
-                        >
-                    </td>
-                    <td>
-                        {card.type}
-                        {card.subtype}
-                    </td>
+        {#each filtered_card_list.toSorted( (a, b) => a.name.localeCompare(b.name), ) as card}
+            <tr>
+                <td>
+                    <a
+                        href="https://magenoir.com/collection/FR/{sanitize_element(
+                            card.element,
+                        )}/{card.slug}.html"
+                        target="_blank">{card.name}</a
+                    >
+                </td>
+                <td>
+                    {card.type}
+                    {card.subtype}
+                </td>
 
-                    <td>
-                        {card.element}
-                    </td>
-                    <td>
-                        <ul class="noBullets">
-                            {#each Object.entries(card.mana_cost) as [a, b]}
-                                <li>
-                                    {b}
-                                    {a}
-                                </li>
-                            {/each}
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="noBullets">
-                            {#each Object.entries(card.components) as [a, b]}
-                                <li>{b} {a}</li>
-                            {/each}
-                        </ul>
-                    </td>
-                    <td>
-                        {card.effect}
-                    </td>
-                </tr>
-            {/if}
+                <td>
+                    {card.element}
+                </td>
+                <td>
+                    <ul class="noBullets">
+                        {#each Object.entries(card.mana_cost) as [a, b]}
+                            <li>
+                                {b}
+                                {a}
+                            </li>
+                        {/each}
+                    </ul>
+                </td>
+                <td>
+                    <ul class="noBullets">
+                        {#each Object.entries(card.components) as [a, b]}
+                            <li>{b} {a}</li>
+                        {/each}
+                    </ul>
+                </td>
+                <td>
+                    {card.effect}
+                </td>
+            </tr>
         {/each}
     </tbody>
 </table>
