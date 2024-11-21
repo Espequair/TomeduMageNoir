@@ -6,26 +6,32 @@
         return toBeCleaned.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
     const slug_translator = {
-        eau: "water",
-        feu: "fire",
-        mineral: "mineral",
-        vegetal: "vegetal",
-        arcane: "arcane",
-        air: "air",
+        "eau": "water",
+        "feu": "fire",
+        "mineral": "mineral",
+        "vegetal": "vegetal",
+        "arcane": "arcane",
+        "air": "air",
     };
     const type_list = cards.reduce(
-        (total, item) => total.add(item.type),
+        (collection, card) => collection.add(card.type),
         new Set(),
     );
     let subtype_list = cards.reduce(
-        (total, item) => total.add(item.subtype),
+        (collection, card) => collection.add(card.subtype),
         new Set(),
     );
     subtype_list.delete("");
     const element_list = cards.reduce(
-        (total, item) => total.add(item.element),
+        (collection, card) => collection.add(card.element),
         new Set(),
     );
+    const mana_cost_list = cards.reduce((collection, card) => {
+        for (const cost in card.mana_cost) {
+            collection.add(slug_translator[removeAccents(cost).toLowerCase()]);
+        }
+        return collection;
+    }, new Set());
     function filter_card(card) {
         let is_included = true;
         is_included &= removeAccents(card.effect)
@@ -40,6 +46,9 @@
         is_included &=
             card.element === filter_options["element"] ||
             filter_options["element"] === "everything";
+        is_included &=
+            Object.keys(card.mana_cost).includes(filter_options["mana"]) ||
+            filter_options["element"] === "everything";
         return is_included;
     }
 </script>
@@ -47,14 +56,15 @@
 <table id="myTable">
     <thead id="searchGroup">
         <tr>
-            <th>Name
+            <th
+                >Name
                 <input
-                type="text"
-                class="myInput"
-                id="myEffectInput"
-                bind:value={filter_options["name"]}
-                placeholder="Search for names.."
-            />
+                    type="text"
+                    class="myInput"
+                    id="myEffectInput"
+                    bind:value={filter_options["name"]}
+                    placeholder="Search for names.."
+                />
             </th>
             <th>
                 Type <select bind:value={filter_options["type"]}>
@@ -62,8 +72,8 @@
                     {#each type_list as type}
                         <option value={type}>{type}</option>
                     {/each}
-                </select></th
-            >
+                </select>
+            </th>
             <th>
                 Element
                 <select bind:value={filter_options["element"]}>
@@ -71,18 +81,27 @@
                     {#each element_list as element}
                         <option value={element}>{element}</option>
                     {/each}
-                </select></th
-            >
-            <th>Mana</th>
+                </select>
+            </th>
+            <th>
+                Mana Cost
+                <select bind:value={filter_options["mana_cost"]}>
+                    <option value="everything" selected> Any mana cost </option>
+                    {#each mana_cost_list as mana_cost}
+                        <option value={mana_cost}>{mana_cost}</option>
+                    {/each}
+                </select>
+            </th>
             <th>Components</th>
-            <th>Effect
+            <th>
+                Effect
                 <input
-        type="text"
-        class="myInput"
-        id="myTextInput"
-        bind:value={filter_options["effect"]}
-        placeholder="Search for text.."
-    />
+                    type="text"
+                    class="myInput"
+                    id="myTextInput"
+                    bind:value={filter_options["effect"]}
+                    placeholder="Search for text.."
+                />
             </th>
         </tr>
     </thead>
