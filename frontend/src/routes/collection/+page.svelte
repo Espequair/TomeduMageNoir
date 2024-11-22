@@ -1,8 +1,12 @@
 <script lang="ts">
-    import { type Card} from "./+page.js";
-    import { sanitize_element, sanitize_string, slug_translator } from "$lib/utils.js"
+    import { type Card } from "./+page.js";
+    import {
+        sanitize_element,
+        sanitize_string,
+        slug_translator,
+    } from "$lib/utils.js";
     import CardRow from "./CardRow.svelte";
-    let { data} = $props();
+    let { data } = $props();
     let cards: Card[] = data.cards;
 
     let filter_options: { [k: string]: any } = $state({
@@ -74,6 +78,7 @@
             filter_options["comp_cost"] === "everything";
         return is_included;
     }
+
     function change_sort_order(property: string) {
         return () => {
             if (!sort_order[0].localeCompare(property)) {
@@ -83,6 +88,7 @@
             }
         };
     }
+
     function sum_costs(card: Card, property: keyof Card): number {
         return Object.values(card[property] as typeof slug_translator).reduce(
             (accumulator: number, cost: number | string | undefined) => {
@@ -95,6 +101,7 @@
             0,
         ) as number;
     }
+
     function sort_card_list_function() {
         if (
             !sort_order[0].localeCompare("name") ||
@@ -213,10 +220,11 @@ Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont
     </thead>
     <tbody>
         {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
-            <CardRow card={card}/>
+            <CardRow {card} />
         {/each}
     </tbody>
 </table>
+
 <!-- svelte-ignore css_unused_selector -->
 <style>
     @import "./styles.css";
