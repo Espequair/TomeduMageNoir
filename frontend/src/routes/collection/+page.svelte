@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { type Card, sanitize_element, sanitize_string } from "./+page.js";
+    import { type Card} from "./+page.js";
+    import { sanitize_element, sanitize_string, slug_translator } from "$lib/utils.js"
     import CardRow from "./CardRow.svelte";
     let { data} = $props();
     let cards: Card[] = data.cards;
-    const slug_translator : Record<string, string> = data.slug_translator
 
     let filter_options: { [k: string]: any } = $state({
         name: "",

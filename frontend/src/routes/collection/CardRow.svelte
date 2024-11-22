@@ -1,6 +1,6 @@
 <script lang="ts">
     let { card } = $props();
-    import {sanitize_element} from "./+page.js"
+    import { sanitize_element } from "$lib/utils.js"
 </script>
 
 <tr>
