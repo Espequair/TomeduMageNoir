@@ -54,26 +54,38 @@
 
     function filter_card(card: Card): boolean {
         let is_included = true;
+
+        // Check if effect matches
         is_included &&= sanitize_string(card.effect).includes(
             sanitize_string(filter_options["effect"]),
         );
+
+        // Check if name matches
         is_included &&= sanitize_string(card.name).includes(
             sanitize_string(filter_options["name"]),
         );
+
+        // Check if type matches
         is_included &&=
             card.type === filter_options["type"] ||
             filter_options["type"] === "everything";
+
+        // Check if element matches
         is_included &&=
             card.element === filter_options["element"] ||
             filter_options["element"] === "everything";
+
+        // Check if mana cost matches
         is_included &&=
             Object.keys(card.mana_cost)
-                .map((cost) => sanitize_element(cost))
+                .map(sanitize_element)
                 .includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
+
+        // Check if component cost matches
         is_included &&=
             Object.keys(card.components)
-                .map((cost) => sanitize_element(cost))
+                .map(sanitize_element)
                 .includes(filter_options["comp_cost"]) ||
             filter_options["comp_cost"] === "everything";
         return is_included;
@@ -104,24 +116,25 @@
 
     function sort_card_list_function() {
         if (
-            !sort_order[0].localeCompare("name") ||
-            !sort_order[0].localeCompare("type") ||
-            !sort_order[0].localeCompare("element")
+            ["name", "type", "element"].some(
+                (s) => !sort_order[0].localeCompare(s),
+            )
         ) {
             return (card_a: Card, card_b: Card) =>
-                (sort_order[1] ? -1 : 1) *
+                (sort_order[1] ? 1 : -1) *
                 (card_a[sort_order[0] as keyof Card] as string).localeCompare(
                     card_b[sort_order[0]] as string,
                 );
         } else if (
-            !sort_order[0].localeCompare("mana_cost") ||
-            !sort_order[0].localeCompare("components")
+            ["mana_cost", "components"].some(
+                (s) => !sort_order[0].localeCompare(s),
+            )
         ) {
             return (card_a: Card, card_b: Card) => {
                 let x =
                     sum_costs(card_a, sort_order[0]) -
                     sum_costs(card_b, sort_order[0]);
-                return x * (sort_order[1] ? -1 : 1);
+                return x * (sort_order[1] ? 1 : -1);
             };
         }
     }
