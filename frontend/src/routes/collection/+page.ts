@@ -1,4 +1,4 @@
-import { cards } from '../card/cards_catalog.js';
+import cards from "../card/cards_catalog.json";
 
 export type Card = {
     slug: string,

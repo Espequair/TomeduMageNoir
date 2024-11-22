@@ -1,5 +1,4 @@
 cards_html/
-cards_*.json
 *.pyc
 *.swp
 uv.lock

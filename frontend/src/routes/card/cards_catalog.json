@@ -1,4 +1,4 @@
-export const cards = [
+[
     {
       "slug": "Tourment-d-epines",
       "mn_image_link": "https://magenoir.com/cards/FR/Vegetal/tourment_d_epines.png",
