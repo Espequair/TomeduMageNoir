@@ -7,7 +7,7 @@
         name: "",
         effect: "",
     });
-    let sort_order: [property: string, ascending: boolean] = $state([
+    let sort_order: [property: keyof Card, ascending: boolean] = $state([
         "name",
         true,
     ]);
@@ -101,21 +101,21 @@
             if (!sort_order[0].localeCompare(property)) {
                 sort_order[1] = !sort_order[1];
             } else {
-                sort_order = [property, true];
+                sort_order = [property as keyof Card, true];
             }
         };
     }
     function sum_costs(card: Card, property: keyof Card): number {
-        return Object.values(card[property]).reduce(
-            (accumulator: number, cost: number | string) => {
+        return Object.values(card[property] as typeof slug_translator).reduce(
+            (accumulator: number, cost: number | string | undefined) => {
                 if (!(typeof cost).localeCompare("number")) {
-                    return accumulator + cost;
+                    return accumulator + (cost as number);
                 } else {
                     return accumulator + 100;
                 }
             },
             0,
-        );
+        ) as number;
     }
     function sort_card_list_function() {
         if (
@@ -124,8 +124,10 @@
             !sort_order[0].localeCompare("element")
         ) {
             return (card_a: Card, card_b: Card) =>
-                (sort_order[1] * 2 - 1) *
-                card_a[sort_order[0]].localeCompare(card_b[sort_order[0]]);
+                (sort_order[1] ? -1 : 1) *
+                (card_a[sort_order[0] as keyof Card] as string).localeCompare(
+                    card_b[sort_order[0]] as string,
+                );
         } else if (
             !sort_order[0].localeCompare("mana_cost") ||
             !sort_order[0].localeCompare("components")
@@ -134,11 +136,11 @@
                 let x =
                     sum_costs(card_a, sort_order[0]) -
                     sum_costs(card_b, sort_order[0]);
-                return x * -(sort_order[1] * 2 - 1);
+                return x * (sort_order[1] ? -1 : 1);
             };
         }
     }
-    function display_correct_symbol(property: string){
+    function display_correct_symbol(property: string) {
         if (!property.localeCompare(sort_order[0])) {
             return sort_order[1] ? "▲" : "▼";
         }
@@ -154,7 +156,7 @@ Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont
             <th>
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                 <h2 onclick={change_sort_order("name")}>
+                <h2 onclick={change_sort_order("name")}>
                     Name {display_correct_symbol("name")}
                 </h2>
                 <input
@@ -204,14 +206,10 @@ Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont
                     {/each}
                 </select>
             </th>
-            <th
-                
-                >
+            <th>
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                <h2
-                    onclick={change_sort_order("components")}
-                >
+                <h2 onclick={change_sort_order("components")}>
                     Components {display_correct_symbol("components")}
                 </h2>
                 <select bind:value={filter_options["comp_cost"]}>
