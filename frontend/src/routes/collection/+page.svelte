@@ -1,7 +1,9 @@
 <script lang="ts">
-    import { type Card } from "./+page.js";
-    let { data } = $props();
+    import { type Card, sanitize_element, sanitize_string } from "./+page.js";
+    import CardRow from "./CardRow.svelte";
+    let { data} = $props();
     let cards: Card[] = data.cards;
+    const slug_translator : Record<string, string> = data.slug_translator
 
     let filter_options: { [k: string]: any } = $state({
         name: "",
@@ -11,14 +13,7 @@
         "name",
         true,
     ]);
-    const slug_translator: Record<string, string> = {
-        eau: "water",
-        feu: "fire",
-        mineral: "mineral",
-        vegetal: "vegetal",
-        arcane: "arcane",
-        air: "air",
-    };
+
     let filtered_card_list = $derived(
         cards.filter((card) => filter_card(card)),
     );
@@ -52,23 +47,6 @@
             }, new Set()),
         ].toSorted((a, b) => String(a).localeCompare(String(b))),
     );
-
-    function removeAccents(accented_string: string): string {
-        return accented_string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-
-    function sanitize_string(unsanitized_string: string): string {
-        return removeAccents(unsanitized_string).toLowerCase();
-    }
-
-    function sanitize_element(unsanitized_element: string): string {
-        let san = sanitize_string(unsanitized_element);
-        if (Object.keys(slug_translator).includes(san)) {
-            return slug_translator[san];
-        } else {
-            return san;
-        }
-    }
 
     function filter_card(card: Card): boolean {
         let is_included = true;
@@ -235,48 +213,11 @@ Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont
     </thead>
     <tbody>
         {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
-            <tr>
-                <td>
-                    <a
-                        href="https://magenoir.com/collection/FR/{sanitize_element(
-                            card.element,
-                        )}/{card.slug}.html"
-                        target="_blank">{card.name}</a
-                    >
-                </td>
-                <td>
-                    {card.type}
-                    {card.subtype}
-                </td>
-
-                <td>
-                    {card.element}
-                </td>
-                <td>
-                    <ul class="noBullets">
-                        {#each Object.entries(card.mana_cost) as [a, b]}
-                            <li>
-                                {b}
-                                {a}
-                            </li>
-                        {/each}
-                    </ul>
-                </td>
-                <td>
-                    <ul class="noBullets">
-                        {#each Object.entries(card.components) as [a, b]}
-                            <li>{b} {a}</li>
-                        {/each}
-                    </ul>
-                </td>
-                <td>
-                    {card.effect}
-                </td>
-            </tr>
+            <CardRow card={card}/>
         {/each}
     </tbody>
 </table>
-
+<!-- svelte-ignore css_unused_selector -->
 <style>
     @import "./styles.css";
 </style>
