@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { cards } from '../cards_catalog.js';
+import cards from '../cards_catalog.json';
 
 export function load({ params }) {
     const card = cards.find((card) => card.slug === params.slug);
