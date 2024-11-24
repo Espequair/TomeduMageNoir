@@ -38,17 +38,3 @@ thead th {
     font-size: 18px;
     /* Increase font-size */
 }
-
-#myTable tr {
-    /* Add a bottom border to all table rows */
-    border-bottom: 1px solid #ddd;
-}
-
-#myTable td {
-    border-left: 1px solid
-}
-
-#myTable tbody tr:hover {
-    /* Add a grey background color to the table header and on hover */
-    background-color: #f1f1f1;
-}
