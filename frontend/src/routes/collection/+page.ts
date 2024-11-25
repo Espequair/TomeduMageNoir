@@ -1,4 +1,4 @@
-import cards from "../card/cards_catalog.json";
+import cards from "../card/cards_catalog.json" with { type: "json" };
 
 export type Card = {
     slug: string,
@@ -20,6 +20,6 @@ export type Card = {
     notes: string[],
 }
 
-export function load() {
+export function load(): {cards: Card[]}{
     return { cards: cards };
 }
