@@ -1,30 +1,7 @@
 <script lang="ts">
     let { card } = $props();
-    import { sanitize_element } from "$lib/utils.js"
+    import { sanitize_element } from "$lib/utils.js";
 </script>
-
-<style>
-td {
-    border-left: 1px solid
-}
-tr {
-    /* Add a bottom border to all table rows */
-    border-bottom: 2px solid #ddd;
-}
-
-tr:nth-child(odd) {
-    /* Add a black */
-    background-color: #deeafe;
-}
-
-tr:hover {
-    /* Add a grey background color to the table header and on hover */
-    background-color: #f1f1f1;
-}
-
-
-</style>
-
 
 <tr>
     <td>
@@ -63,8 +40,30 @@ tr:hover {
             {/each}
         </ul>
     </td>
-    <td>
+    <td class="preserve-linebreak">
         {card.effect}
     </td>
 </tr>
 
+<style>
+    td {
+        border-left: 1px solid;
+    }
+    tr {
+        /* Add a bottom border to all table rows */
+        border-bottom: 2px solid #ddd;
+    }
+
+    tr:nth-child(odd) {
+        /* Add a black */
+        background-color: #deeafe;
+    }
+
+    tr:hover {
+        /* Add a grey background color to the table header and on hover */
+        background-color: #f1f1f1;
+    }
+    td.preserve-linebreak {
+        white-space: pre-line
+    }
+</style>
