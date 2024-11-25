@@ -1,6 +1,5 @@
 <script lang="ts">
-    let data = $props();
-    let card: Card = data.card;
+    let {card} = $props();
     import { sanitize_element } from "$lib/utils.js";
     import type { Card } from "./+page.js";
 </script>
@@ -45,7 +44,7 @@
     <td class="preserve-linebreak">
         <b>{card.name}</b>
         <br />
-        {card.effect.replace("/\t/g", "").replace("/(\n)+/g", "\n")}
+        {card.effect}
     </td>
 </tr>
 
