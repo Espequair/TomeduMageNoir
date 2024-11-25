@@ -231,5 +231,43 @@ Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont
 
 <!-- svelte-ignore css_unused_selector -->
 <style>
-    @import "./styles.css";
+    .noBullets {
+        list-style-type: none;
+        /* Remove bullets */
+        padding: 0;
+        /* Remove padding */
+        margin: 0;
+        /* Remove margins */
+    }
+
+    #searchGroup {
+        background: #999999;
+        border: 5px solid;
+        position: sticky;
+        top: 0px;
+    }
+    thead th {
+        border-left: 1px solid;
+    }
+    .myInput {
+        width: 100%;
+        /* Full-width */
+        font-size: 16px;
+        /* Increase font-size */
+        border: 1px solid #ddd;
+        /* Add a grey border */
+        margin-bottom: 12px;
+        /* Add some space below the input */
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        /* Collapse borders */
+        width: 100%;
+        /* Full-width */
+        border: 1px solid #ddd;
+        /* Add a grey border */
+        font-size: 18px;
+        /* Increase font-size */
+    }
 </style>
