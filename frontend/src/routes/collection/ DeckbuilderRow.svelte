@@ -11,7 +11,11 @@
 <tr class="deckbuilder-row">
     <td>
         <button type="button" onclick={decrementValue}>-</button>
+        {number}
         <button type="button" onclick={incrementValue}>+</button>
+    </td>
+    <td>
+        {card.element}
     </td>
 </tr>
 
