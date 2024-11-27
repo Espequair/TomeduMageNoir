@@ -11,12 +11,12 @@ export function removeAccents(accented_string: string): string {
     return accented_string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-export function sanitize_string(unsanitized_string: string): string {
+export function sanitizeString(unsanitized_string: string): string {
     return removeAccents(unsanitized_string).toLowerCase();
 }
 
-export function sanitize_element(unsanitized_element: string): string {
-    let san = sanitize_string(unsanitized_element);
+export function sanitizeElement(unsanitized_element: string): string {
+    let san = sanitizeString(unsanitized_element);
     if (Object.keys(slug_translator).includes(san)) {
         return slug_translator[san];
     } else {

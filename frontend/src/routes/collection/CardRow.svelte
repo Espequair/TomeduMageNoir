@@ -1,8 +1,8 @@
 <script lang="ts">
     let { card } = $props();
-    import { sanitize_element } from "$lib/utils.js";
+    import { sanitizeElement } from "$lib/utils.js";
 
-    function insert_icons(str: string): string {
+    function insertIcons(str: string): string {
         const regexMap = {
             air: /\bair\b/gi,
             fire: /\bf(ire|eu)\b/gi,
@@ -22,7 +22,7 @@
 <tr>
     <td>
         <a
-            href="https://magenoir.com/collection/FR/{sanitize_element(
+            href="https://magenoir.com/collection/FR/{sanitizeElement(
                 card.element,
             )}/{card.slug}.html"
             target="_blank">{card.name}</a
@@ -34,14 +34,14 @@
     </td>
 
     <td>
-        {@html insert_icons(card.element)}
+        {@html insertIcons(card.element)}
     </td>
     <td>
         <ul class="noBullets">
             {#each Object.entries(card.mana_cost).toSorted((f,s)=>(f[0].localeCompare(s[0]))) as [a, b]}
                 <li>
                     {b}
-                    {@html insert_icons(a)}
+                    {@html insertIcons(a)}
                 </li>
             {/each}
         </ul>
@@ -59,7 +59,7 @@
     <td class="preserve-linebreak">
         <b>{card.name}</b>
         <br />
-        {@html insert_icons(card.effect)}
+        {@html insertIcons(card.effect)}
     </td>
 </tr>
 <style>

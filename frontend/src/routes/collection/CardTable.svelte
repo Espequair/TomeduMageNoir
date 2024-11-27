@@ -1,8 +1,8 @@
 <script lang="ts">
     import { type Card } from "./+page.js";
     import {
-        sanitize_element,
-        sanitize_string,
+        sanitizeElement,
+        sanitizeString,
         slug_translator,
     } from "$lib/utils.js";
     import CardRow from "./CardRow.svelte";
@@ -38,7 +38,7 @@
     let mana_cost_list = $derived(
         filtered_card_list.reduce((collection, card) => {
             for (const cost in card.mana_cost) {
-                collection.add(sanitize_element(cost));
+                collection.add(sanitizeElement(cost));
             }
             return collection;
         }, new Set()),
@@ -47,7 +47,7 @@
         [
             ...filtered_card_list.reduce((collection, card) => {
                 for (const cost in card.components) {
-                    collection.add(sanitize_element(cost));
+                    collection.add(sanitizeElement(cost));
                 }
                 return collection;
             }, new Set()),
@@ -58,13 +58,13 @@
         let is_included = true;
 
         // Check if effect matches
-        is_included &&= sanitize_string(card.effect).includes(
-            sanitize_string(filter_options["effect"]),
+        is_included &&= sanitizeString(card.effect).includes(
+            sanitizeString(filter_options["effect"]),
         );
 
         // Check if name matches
-        is_included &&= sanitize_string(card.name).includes(
-            sanitize_string(filter_options["name"]),
+        is_included &&= sanitizeString(card.name).includes(
+            sanitizeString(filter_options["name"]),
         );
 
         // Check if type matches
@@ -80,14 +80,14 @@
         // Check if mana cost matches
         is_included &&=
             Object.keys(card.mana_cost)
-                .map(sanitize_element)
+                .map(sanitizeElement)
                 .includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
 
         // Check if component cost matches
         is_included &&=
             Object.keys(card.components)
-                .map(sanitize_element)
+                .map(sanitizeElement)
                 .includes(filter_options["comp_cost"]) ||
             filter_options["comp_cost"] === "everything";
         return is_included;
