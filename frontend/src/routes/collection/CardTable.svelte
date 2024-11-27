@@ -6,8 +6,9 @@
         slug_translator,
     } from "$lib/utils.js";
     import CardRow from "./CardRow.svelte";
-    let data = $props()
-    let cards = data.cards as Card[];;
+    let data = $props();
+    let cards = data.cards as Card[];
+    
 
     let filter_options: { [k: string]: any } = $state({
         name: "",
@@ -146,88 +147,94 @@
     }
 </script>
 
-<h2>Results {filtered_card_list.length}</h2>
-<h2>Sort {sort_order[0]} {sort_order[1] ? "ascending" : "descending"}</h2>
-Cliquer sur le titre d'une colonne pour changer la façon dont les colonnes sont ordonnés
-<table id="myTable">
-    <thead id="searchGroup">
-        <tr>
-            <th onclick={change_sort_order("name")}>
-                <h2>
-                    Name {display_correct_symbol("name")}
-                </h2>
-                <input
-                    type="text"
-                    class="myInput"
-                    id="myEffectInput"
-                    bind:value={filter_options["name"]}
-                    placeholder="Search for names.."
-                />
-            </th>
-            <th onclick={change_sort_order("type")}>
-                <h2>
-                    Type {display_correct_symbol("type")}
-                </h2>
-                <select bind:value={filter_options["type"]}>
-                    <option value="everything" selected> All Types </option>
-                    {#each type_list as type}
-                        <option value={type}>{type}</option>
-                    {/each}
-                </select>
-            </th>
-            <th onclick={change_sort_order("element")}>
-                <h2>
-                    Element {display_correct_symbol("element")}
-                </h2>
-                <select bind:value={filter_options["element"]}>
-                    <option value="everything" selected> All Elements </option>
-                    {#each element_list as element}
-                        <option value={element}>{element}</option>
-                    {/each}
-                </select>
-            </th>
-            <th onclick={change_sort_order("mana_cost")}>
-                <h2>
-                    Mana Cost {display_correct_symbol("mana_cost")}
-                </h2>
-                <select bind:value={filter_options["mana_cost"]}>
-                    <option value="everything" selected> Any mana cost </option>
-                    {#each mana_cost_list as mana_cost}
-                        <option value={mana_cost}>{mana_cost}</option>
-                    {/each}
-                </select>
-            </th>
-            <th onclick={change_sort_order("components")}>
-                <h2>
-                    Components {display_correct_symbol("components")}
-                </h2>
-                <select bind:value={filter_options["comp_cost"]}>
-                    <option value="everything" selected>
-                        Any component cost
-                    </option>
-                    {#each comp_cost_list as comp_cost}
-                        <option value={comp_cost}>{comp_cost}</option>
-                    {/each}
-                </select>
-            </th>
-            <th>
-                Effect
-                <input
-                    type="text"
-                    class="myInput"
-                    id="myTextInput"
-                    bind:value={filter_options["effect"]}
-                    placeholder="Search for text.."
-                />
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
-            <CardRow {card} />
-        {/each}
-    </tbody>
-</table>
+<div id="table-root">
+    <table id="myTable">
+        <thead id="searchGroup">
+            <tr>
+                <th onclick={change_sort_order("name")}>
+                    <h2>
+                        Name {display_correct_symbol("name")}
+                    </h2>
+                    <input
+                        type="text"
+                        class="myInput"
+                        id="myEffectInput"
+                        bind:value={filter_options["name"]}
+                        placeholder="Search for names.."
+                    />
+                </th>
+                <th onclick={change_sort_order("type")}>
+                    <h2>
+                        Type {display_correct_symbol("type")}
+                    </h2>
+                    <select bind:value={filter_options["type"]}>
+                        <option value="everything" selected> All Types </option>
+                        {#each type_list as type}
+                            <option value={type}>{type}</option>
+                        {/each}
+                    </select>
+                </th>
+                <th onclick={change_sort_order("element")}>
+                    <h2>
+                        Element {display_correct_symbol("element")}
+                    </h2>
+                    <select bind:value={filter_options["element"]}>
+                        <option value="everything" selected>
+                            All Elements
+                        </option>
+                        {#each element_list as element}
+                            <option value={element}>{element}</option>
+                        {/each}
+                    </select>
+                </th>
+                <th onclick={change_sort_order("mana_cost")}>
+                    <h2>
+                        Mana Cost {display_correct_symbol("mana_cost")}
+                    </h2>
+                    <select bind:value={filter_options["mana_cost"]}>
+                        <option value="everything" selected>
+                            Any mana cost
+                        </option>
+                        {#each mana_cost_list as mana_cost}
+                            <option value={mana_cost}>{mana_cost}</option>
+                        {/each}
+                    </select>
+                </th>
+                <th onclick={change_sort_order("components")}>
+                    <h2>
+                        Components {display_correct_symbol("components")}
+                    </h2>
+                    <select bind:value={filter_options["comp_cost"]}>
+                        <option value="everything" selected>
+                            Any component cost
+                        </option>
+                        {#each comp_cost_list as comp_cost}
+                            <option value={comp_cost}>{comp_cost}</option>
+                        {/each}
+                    </select>
+                </th>
+                <th>
+                    Effect
+                    <input
+                        type="text"
+                        class="myInput"
+                        id="myTextInput"
+                        bind:value={filter_options["effect"]}
+                        placeholder="Search for text.."
+                    />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
+                <CardRow {card} />
+            {/each}
+        </tbody>
+    </table>
+    <div id="result-counter">
+        <h2>Results {filtered_card_list.length}</h2>
+    </div>
+</div>
 
 <!-- svelte-ignore css_unused_selector -->
 <style>
