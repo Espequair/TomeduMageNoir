@@ -1,13 +1,23 @@
 <script lang="ts">
-
+    import type { Card } from "./+page.js";
+    let activeDeck
 </script>
 
 <div id="root-container">
-    Ping
+    <div id="deck-selector"></div>
+    <div id="deck-builder">
+        <table>
+            <tbody>
+                <tr>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <style>
-#root-container {
-    background-color: aliceblue;
-}
+    #root-container {
+        background-color: aliceblue;
+    }
 </style>

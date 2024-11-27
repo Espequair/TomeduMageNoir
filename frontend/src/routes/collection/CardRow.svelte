@@ -12,8 +12,8 @@
             water: /\b(eau|water)\b/gi,
         };
         Object.entries(regexMap).forEach(([element, regex]) => {
-            const pict_style = "style='height: 1em; background: black; padding:5px;border-radius: 50%;'"
-            str = str.replace(regex,"$&<img class='pict' "+pict_style+" src='/pict/"+element+"_icon.png' alt='$&' />");
+            const pictStyle = "style='height: 1em; background: black; padding:5px;border-radius: 50%;'"
+            str = str.replace(regex,"$&<img class='pict' " + pictStyle + " src='/pict/"+element+"_icon.png' alt='$&' />");
         });
         return str;
     }

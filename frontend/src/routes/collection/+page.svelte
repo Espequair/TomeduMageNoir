@@ -4,24 +4,24 @@
     import DeckbuilderContainer from "./DeckbuilderContainer.svelte";
     let { data } = $props();
     let cards: Card[] = data.cards;
+    import { Pane, Splitpanes } from "svelte-splitpanes";
 </script>
 
 <div id="useful-container">
-    <CardTable {cards} />
-    <DeckbuilderContainer />
+    <Splitpanes>
+        <Pane minSize={20} size={20}>
+            <DeckbuilderContainer />
+        </Pane>
+        <Pane>
+            <CardTable {cards} />
+        </Pane>
+    </Splitpanes>
 </div>
 
 <style>
-#useful-container {
-  border: 2px dotted rgb(96 139 168);
-  display: flex;
-  justify-content: space-between;
-}
-
-#useful-container > * {
-  border: 2px solid rgb(96 139 168);
-  border-radius: 5px;
-  background-color: rgb(96 139 168 / 0.2);
-  padding: 1em;
-}
+    #useful-container {
+        border: 2px dotted rgb(96 139 168);
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
