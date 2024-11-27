@@ -151,6 +151,7 @@
     <table id="myTable">
         <thead id="searchGroup">
             <tr>
+                <th><h2>Add to Deck</h2></th>
                 <th onclick={change_sort_order("name")}>
                     <h2>
                         Name {display_correct_symbol("name")}

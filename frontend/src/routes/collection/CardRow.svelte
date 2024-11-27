@@ -21,6 +21,17 @@
 
 <tr>
     <td>
+        <div>
+            <button
+                class="take-all"
+                type="button"
+                onclick={() => console.log("toot")}
+            >
+                +
+            </button>
+        </div>
+    </td>
+    <td>
         <a
             href="https://magenoir.com/collection/FR/{sanitizeElement(
                 card.element,
@@ -63,6 +74,14 @@
     </td>
 </tr>
 <style>
+    .take-all {
+        width: 100%; /* Make the button fill the width */
+        height: 100%; /* Make the button fill the height */
+        margin: 0; /* Remove extra margin */
+        padding: 0; /* Remove default padding */
+        display: block; /* Ensure the button behaves like a block element */
+        box-sizing: border-box; /* Include borders and padding in the width/height */
+    }
     .noBullets {
         list-style-type: none;
         /* Remove bullets */
