@@ -1,6 +1,11 @@
 <script lang="ts">
     import type { Card } from "./+page.js";
-    let activeDeck
+    import DeckbuilderRow from "./ DeckbuilderRow.svelte";
+    let activeDeck = [
+        { card: { element: "this" }, count: 1 },
+        { card: { element: "that" }, count: 2 },
+        { card: { element: "the other thing" }, count: 3 },
+    ];
 </script>
 
 <div id="root-container">
@@ -8,16 +13,21 @@
     <div id="deck-builder">
         <table>
             <tbody>
-                <tr>
-                    
-                </tr>
+                {#each activeDeck as row}
+                    <tr class="deckbuilder-row">
+                        <DeckbuilderRow number={row.count} card={row.card} />
+                    </tr>
+                {/each}
             </tbody>
         </table>
     </div>
 </div>
 
 <style>
-    #root-container {
-        background-color: aliceblue;
+    tr:nth-child(odd) {
+        background-color: #deeafe;
+    }
+    tr:hover {
+        background-color: rgb(127, 127, 247);
     }
 </style>
