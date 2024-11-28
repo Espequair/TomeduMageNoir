@@ -9,9 +9,10 @@
     ></td
 >
 <td>
-    <button type="button" onclick={()=>activeDeck.modCard(card, -1)}>-</button>
+    <button type="button" onclick={() => activeDeck.modCard(card, -1)}>-</button
+    >
     {number}
-    <button type="button" onclick={()=>activeDeck.modCard(card, 1)}>+</button>
+    <button type="button" onclick={() => activeDeck.modCard(card, 1)}>+</button>
 </td>
 <td>
     {card.name}

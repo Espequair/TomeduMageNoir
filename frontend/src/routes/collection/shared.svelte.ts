@@ -11,14 +11,14 @@ export class Deck {
     }
 
     getCardCount() {
-        return [...this.cards.entries()].reduce((acc, curr)=>(acc+curr[1]), 0)
+        return [...this.cards.entries()].reduce((acc, curr) => (acc + curr[1]), 0)
     }
 
-    getAllcards(){
-        return [...this.cards].toSorted((a,b)=>a[0].name.localeCompare(b[0].name));
-    } 
+    getAllcards() {
+        return [...this.cards].toSorted((a, b) => a[0].name.localeCompare(b[0].name));
+    }
 
-    delCard(card: Card){
+    delCard(card: Card) {
         this.cards.delete(card);
     }
 
@@ -28,7 +28,7 @@ export class Deck {
             this.cards.set(card, 1);
             return;
         }
-        this.cards.set(card, Math.min(Math.max(cardCount + diff,0),4));
+        this.cards.set(card, Math.min(Math.max(cardCount + diff, 0), 4));
     }
 }
 export const activeDeck = $state(new Deck());

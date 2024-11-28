@@ -11,17 +11,15 @@
             <br/>
             <span>Cards in deck : {activeDeck.getCardCount()}</span>
         </div>
-        <table >
+        <table>
             <tbody>
                 {#each activeDeck.getAllcards() as [card, count]}
                     <tr class="deckbuilder-row">
-                        <DeckbuilderRow number={count} card={card} />
+                        <DeckbuilderRow number={count} {card} />
                     </tr>
                 {:else}
                     <tr>
-                        <td>
-                            No Cards!
-                        </td>
+                        <td> No Cards! </td>
                     </tr>
                 {/each}
             </tbody>
@@ -30,7 +28,7 @@
 </div>
 
 <style>
-    table{
+    table {
         width: 100%;
         border: black 1px solid;
     }
