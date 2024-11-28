@@ -1,9 +1,9 @@
 <script>
-    let {number, card} = $props();
-    function decrementValue(){
+    let { number, card } = $props();
+    function decrementValue() {
         number = Math.max(0, number - 1);
     }
-    function incrementValue(){
+    function incrementValue() {
         number = Math.min(4, number + 1);
     }
 </script>
