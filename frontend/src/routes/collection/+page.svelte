@@ -9,7 +9,7 @@
 
 <div id="useful-container">
     <Splitpanes>
-        <Pane minSize={20} size={20}>
+        <Pane minSize={2} size={30}>
             <DeckbuilderContainer />
         </Pane>
         <Pane>
