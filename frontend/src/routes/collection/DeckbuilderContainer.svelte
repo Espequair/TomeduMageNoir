@@ -10,10 +10,14 @@
         }
         navigator.clipboard.writeText(exp);
     }
+    
 </script>
 
 <div id="root-container">
-    <div id="deck-selector"></div>
+    <div id="deck-selector">
+        <select>
+        </select>
+    </div>
     <div id="deck-builder">
         <div id="table-header">
             <span>Deck : {activeDeck.name}</span>

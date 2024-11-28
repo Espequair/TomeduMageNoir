@@ -3,6 +3,7 @@
     import { sanitizeElement } from "$lib/utils.js";
     import { activeDeck, Deck } from "./shared.svelte.js";
     function insertIcons(str: string): string {
+        return str;
         const regexMap = {
             air: /\bair\b/gi,
             fire: /\bf(ire|eu)\b/gi,
