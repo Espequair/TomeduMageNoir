@@ -10,12 +10,12 @@ export class Deck {
         this.cards = new SvelteMap<Card, number>();
     }
 
-    get length() {
-        return this.cards.size;
+    getCardCount() {
+        return [...this.cards.entries()].reduce((acc, curr)=>(acc+curr[1]), 0)
     }
 
     getAllcards(){
-        return this.cards.entries();
+        return [...this.cards].toSorted((a,b)=>a[0].name.localeCompare(b[0].name));
     } 
 
     delCard(card: Card){
@@ -28,7 +28,7 @@ export class Deck {
             this.cards.set(card, 1);
             return;
         }
-        this.cards.set(card, cardCount + diff);
+        this.cards.set(card, Math.min(Math.max(cardCount + diff,0),4));
     }
 }
 export const activeDeck = $state(new Deck());

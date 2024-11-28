@@ -1,15 +1,19 @@
 <script lang="ts">
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
     import {Deck, activeDeck} from "./shared.svelte.js"
-    let r = $derived(activeDeck)
 </script>
 
 <div id="root-container">
     <div id="deck-selector"></div>
     <div id="deck-builder">
-        <table style="width:max-content;">
+        <div id="table-header">
+            <span>Deck : {activeDeck.name}</span>
+            <br/>
+            <span>Cards in deck : {activeDeck.getCardCount()}</span>
+        </div>
+        <table >
             <tbody>
-                {#each r.cards.entries() as [card, count]}
+                {#each activeDeck.getAllcards() as [card, count]}
                     <tr class="deckbuilder-row">
                         <DeckbuilderRow number={count} card={card} />
                     </tr>
@@ -26,6 +30,10 @@
 </div>
 
 <style>
+    table{
+        width: 100%;
+        border: black 1px solid;
+    }
     tr:nth-child(odd) {
         background-color: #deeafe;
     }
