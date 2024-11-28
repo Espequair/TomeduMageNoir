@@ -2,12 +2,6 @@
     // @ts-ignore
     import { activeDeck } from "./shared.svelte.ts";
     let { number, card } = $props();
-    function decrementValue() {
-        number = Math.max(0, number - 1);
-    }
-    function incrementValue() {
-        number = Math.min(4, number + 1);
-    }
 </script>
 
 <td
@@ -15,9 +9,9 @@
     ></td
 >
 <td>
-    <button type="button" onclick={decrementValue}>-</button>
+    <button type="button" onclick={()=>activeDeck.modCard(card, -1)}>-</button>
     {number}
-    <button type="button" onclick={incrementValue}>+</button>
+    <button type="button" onclick={()=>activeDeck.modCard(card, 1)}>+</button>
 </td>
 <td>
     {card.name}
