@@ -1,7 +1,7 @@
 <script lang="ts">
     let { card } = $props();
     import { sanitizeElement } from "$lib/utils.js";
-
+    import { activeDeck, Deck } from "./shared.svelte.js";
     function insertIcons(str: string): string {
         const regexMap = {
             air: /\bair\b/gi,
@@ -32,7 +32,7 @@
         <button
             class="take-all"
             type="button"
-            onclick={() => console.log("toot")}
+            onclick={() => activeDeck.modCard(card, 1)}
         >
             +
         </button>

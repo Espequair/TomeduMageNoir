@@ -1,20 +1,23 @@
 <script lang="ts">
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
-    let activeDeck = [
-        { card: { element: "this" }, count: 1 },
-        { card: { element: "that" }, count: 2 },
-        { card: { element: "the other thing" }, count: 3 },
-    ];
+    import {Deck, activeDeck} from "./shared.svelte.js"
+    let r = $derived(activeDeck)
 </script>
 
 <div id="root-container">
     <div id="deck-selector"></div>
     <div id="deck-builder">
-        <table>
+        <table style="width:max-content;">
             <tbody>
-                {#each activeDeck as row}
+                {#each r.cards.entries() as [card, count]}
                     <tr class="deckbuilder-row">
-                        <DeckbuilderRow number={row.count} card={row.card} />
+                        <DeckbuilderRow number={count} card={card} />
+                    </tr>
+                {:else}
+                    <tr>
+                        <td>
+                            No Cards!
+                        </td>
                     </tr>
                 {/each}
             </tbody>
