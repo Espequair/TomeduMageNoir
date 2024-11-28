@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { Card } from "./+page.js";
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
     let activeDeck = [
         { card: { element: "this" }, count: 1 },
