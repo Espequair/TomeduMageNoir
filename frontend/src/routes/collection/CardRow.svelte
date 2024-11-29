@@ -46,9 +46,13 @@
             target="_blank">{card.name}</a
         >
     </td>
-    <td>
+    <td class="type">
         {card.type}
         {card.subtype}
+        {#if card.type=="Permanent" && card.lifepoints !== null}
+            <br/>
+            PV : {card.lifepoints}
+        {/if}
     </td>
 
     <td class="element">
