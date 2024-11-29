@@ -18,6 +18,8 @@
 
 <div id="root-container">
     <div id="deck-selector" style="display: inline;">
+        <button type="button" onclick={decks.saveDecksToLocalStorage}>Save All Decks</button>
+        <br/>
         <button type="button" onclick={createNewDeck}>Create New Deck</button>
         <select bind:value={decks.activeDeckNum}>
             {#each decks.list as deck, index}

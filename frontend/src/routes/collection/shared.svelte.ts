@@ -37,7 +37,8 @@ export class Decks {
     activeDeck: Deck = $derived(this.decks[this.activeDeckNum])
 
     constructor() {
-        if (typeof window !== 'undefined') {
+        this.activeDeckNum = 0
+        if (typeof window == 'undefined') {
             let storedValue = localStorage.getItem('magenoir_deckbuilder');
             if (storedValue == null) {
                 this.decks = [new Deck()]; // localstorage exists but no key
@@ -46,6 +47,14 @@ export class Decks {
             }
         } else {
             this.decks = [new Deck()]; // localstorage does not exist
+        }
+    }
+
+    saveDecksToLocalStorage() {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("magenoir_deckbuilder", JSON.stringify(this.decks))
+        } else {
+            alert("NO WINDOW");
         }
     }
 
