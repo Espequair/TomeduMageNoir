@@ -29,7 +29,7 @@
 </script>
 
 <tr>
-    <td>
+    <td class="add-card">
         <button
             class="take-all"
             type="button"
@@ -38,7 +38,7 @@
             +
         </button>
     </td>
-    <td>
+    <td class="name">
         <a
             href="https://magenoir.com/collection/FR/{sanitizeElement(
                 card.element,
@@ -51,10 +51,10 @@
         {card.subtype}
     </td>
 
-    <td>
+    <td class="element">
         {@html insertIcons(card.element)}
     </td>
-    <td>
+    <td class="mana-cost">
         <ul class="noBullets">
             {#each Object.entries(card.mana_cost).toSorted( (f, s) => f[0].localeCompare(s[0]), ) as [a, b]}
                 <li>
@@ -64,7 +64,7 @@
             {/each}
         </ul>
     </td>
-    <td>
+    <td class="components">
         <ul class="noBullets">
             {#each Object.entries(card.components).toSorted( (f, s) => f[0].localeCompare(s[0]), ) as [a, b]}
                 <li>
@@ -74,7 +74,7 @@
             {/each}
         </ul>
     </td>
-    <td class="preserve-linebreak">
+    <td class="effect preserve-linebreak">
         <b>{card.name}</b>
         <br />
         {@html insertIcons(card.effect)}
