@@ -1,18 +1,18 @@
 <script>
     // @ts-ignore
-    import { activeDeck } from "./shared.svelte.ts";
+    import { decks } from "./shared.svelte.ts";
     let { number, card } = $props();
 </script>
 
 <td
-    ><button type="button" onclick={() => activeDeck.delCard(card)}>🗑️</button
+    ><button type="button" onclick={() => decks.activeDeck.delCard(card)}>🗑️</button
     ></td
 >
 <td>
-    <button type="button" onclick={() => activeDeck.modCard(card, -1)}>-</button
+    <button type="button" onclick={() => decks.activeDeck.modCard(card, -1)}>-</button
     >
     {number}
-    <button type="button" onclick={() => activeDeck.modCard(card, 1)}>+</button>
+    <button type="button" onclick={() => decks.activeDeck.modCard(card, 1)}>+</button>
 </td>
 <td>
     {card.name}
