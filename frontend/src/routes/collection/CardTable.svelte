@@ -8,7 +8,6 @@
     import CardRow from "./CardRow.svelte";
     let data = $props();
     let cards = data.cards as Card[];
-    
 
     let filter_options: { [k: string]: any } = $state({
         name: "",
@@ -215,7 +214,7 @@
                     </select>
                 </th>
                 <th>
-                    Effect
+                    <h2>Effect</h2>
                     <input
                         type="text"
                         class="myInput"
