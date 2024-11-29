@@ -31,4 +31,42 @@ export class Deck {
         this.cards.set(card, Math.min(Math.max(cardCount + diff, 0), 4));
     }
 }
-export const activeDeck = $state(new Deck());
+export class Decks {
+    decks: Deck[] = $state([]);
+    activeDeckNum: number = $state(0)
+    activeDeck: Deck = $derived(this.decks[this.activeDeckNum])
+
+    constructor() {
+        if (typeof window !== 'undefined') {
+            let storedValue = localStorage.getItem('magenoir_deckbuilder');
+            if (storedValue == null) {
+                this.decks = [new Deck()]; // localstorage exists but no key
+            } else {
+                this.decks = JSON.parse(storedValue); // found a key
+            }
+        } else {
+            this.decks = [new Deck()]; // localstorage does not exist
+        }
+    }
+
+    getDecksfromLocalStorage(): Deck[] {
+        if (typeof window !== 'undefined') {
+            let storedValue = localStorage.getItem('key') || 'default value';
+            console.log("inside");
+            return [new Deck()];
+        }
+        console.log("outside");
+        return [new Deck()];
+    }
+
+    get list(): Deck[] {
+        return this.decks;
+    }
+
+    push(deck: Deck) {
+        this.decks.push(deck);
+    }
+
+}
+
+export let decks: Decks = $state(new Decks());
