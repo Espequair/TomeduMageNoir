@@ -38,24 +38,36 @@ export class Decks {
 
     constructor() {
         this.activeDeckNum = 0
-        if (typeof window == 'undefined') {
+        this.decks=[new Deck()]
+        /*
+        if (typeof window !== 'undefined') {
+            console.log("Loading: window found")
             let storedValue = localStorage.getItem('magenoir_deckbuilder');
-            if (storedValue == null) {
+            console.log("value of localstorage is " + storedValue)
+            if (storedValue == null || storedValue == "undefined") {
                 this.decks = [new Deck()]; // localstorage exists but no key
             } else {
                 this.decks = JSON.parse(storedValue); // found a key
             }
         } else {
+            console.log("Loading: window not found")
             this.decks = [new Deck()]; // localstorage does not exist
-        }
+        }*/
     }
 
     saveDecksToLocalStorage() {
+        /*
         if (typeof window !== 'undefined') {
+            console.log("Saving: window found")
+            console.log("value of localstorage is " + localStorage.getItem("magenoir_deckbuilder"))
+            console.log("printing snapsot of deck " + $state.snapshot(this.decks))
+            console.log("printing JSON of snapshot " + JSON.stringify($state.snapshot(this.decks)))
             localStorage.setItem("magenoir_deckbuilder", JSON.stringify(this.decks))
+            console.log("value of localstorage is " + localStorage.getItem("magenoir_deckbuilder"))
         } else {
             alert("NO WINDOW");
-        }
+        }*/
+       alert("not implemented yet")
     }
 
     getDecksfromLocalStorage(): Deck[] {
@@ -72,7 +84,7 @@ export class Decks {
         return this.decks;
     }
 
-    pop(){
+    pop() {
         this.decks.splice(this.activeDeckNum, 1)
     }
 
