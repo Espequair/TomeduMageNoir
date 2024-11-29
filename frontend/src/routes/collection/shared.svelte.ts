@@ -63,6 +63,10 @@ export class Decks {
         return this.decks;
     }
 
+    pop(){
+        this.decks.splice(this.activeDeckNum, 1)
+    }
+
     push(deck: Deck) {
         this.decks.push(deck);
     }
