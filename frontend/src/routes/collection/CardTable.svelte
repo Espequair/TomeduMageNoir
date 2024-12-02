@@ -151,8 +151,8 @@
         <thead id="searchGroup">
             <tr>
                 <th><h2>Add to Deck</h2></th>
-                <th onclick={change_sort_order("name")}>
-                    <h2>
+                <th>
+                    <h2 onclick={change_sort_order("name")}>
                         Name {display_correct_symbol("name")}
                     </h2>
                     <input
@@ -163,8 +163,8 @@
                         placeholder="Search for names.."
                     />
                 </th>
-                <th onclick={change_sort_order("type")}>
-                    <h2>
+                <th>
+                    <h2 onclick={change_sort_order("type")}>
                         Type {display_correct_symbol("type")}
                     </h2>
                     <select bind:value={filter_options["type"]}>
@@ -174,8 +174,8 @@
                         {/each}
                     </select>
                 </th>
-                <th onclick={change_sort_order("element")}>
-                    <h2>
+                <th>
+                    <h2 onclick={change_sort_order("element")}>
                         Element {display_correct_symbol("element")}
                     </h2>
                     <select bind:value={filter_options["element"]}>
@@ -187,8 +187,8 @@
                         {/each}
                     </select>
                 </th>
-                <th onclick={change_sort_order("mana_cost")}>
-                    <h2>
+                <th>
+                    <h2 onclick={change_sort_order("mana_cost")}>
                         Mana Cost {display_correct_symbol("mana_cost")}
                     </h2>
                     <select bind:value={filter_options["mana_cost"]}>
@@ -200,8 +200,8 @@
                         {/each}
                     </select>
                 </th>
-                <th onclick={change_sort_order("components")}>
-                    <h2>
+                <th>
+                    <h2 onclick={change_sort_order("components")}>
                         Components {display_correct_symbol("components")}
                     </h2>
                     <select bind:value={filter_options["comp_cost"]}>
