@@ -201,6 +201,7 @@
                     </select>
                 </th>
                 <th>
+                    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                     <h2 onclick={change_sort_order("components")}>
                         Components {display_correct_symbol("components")}
                     </h2>

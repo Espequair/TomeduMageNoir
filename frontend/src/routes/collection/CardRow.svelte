@@ -79,8 +79,6 @@
         </ul>
     </td>
     <td class="effect preserve-linebreak">
-        <b>{card.name}</b>
-        <br />
         {@html insertIcons(card.effect)}
     </td>
 </tr>
