@@ -1,6 +1,8 @@
 import cards from "../card/cards_catalog.json" with { type: "json" };
 
 export type Card = {
+    transmutables: string;
+    full_name: string;
     slug: string,
     mn_image_link: string,
     language: string,
