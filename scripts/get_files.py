@@ -151,7 +151,7 @@ def extract_card_details_from_file(file_name: str,
     card["components"] = extract_costs(details_dict[4 + total_shift])
     card["effect"] = details_dict[5 + total_shift].text.strip()
     card["full_name"] = card["name"]
-    transmutable_elements = re.search("Transmutable : (\w+)(, (\w+))*", card["effect"])
+    transmutable_elements = re.search("Transmutable : ([A-Za-zÀ-ÿ]+)(, ([A-Za-zÀ-ÿ]+))*", card["effect"])
     if transmutable_elements:
       transmutable_elements = transmutable_elements.group()[15:].split(", ")
       card["full_name"] += f" {" ".join(transmutable_elements)}"
