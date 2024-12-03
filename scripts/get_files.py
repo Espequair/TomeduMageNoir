@@ -5,6 +5,7 @@ import requests
 from time import sleep
 from os import access, listdir, getcwd, chdir, mkdir, F_OK
 from os.path import isfile, join
+import re
 
 # "https://magenoir.com/collection_fr.html"
 # "collection.html"
@@ -123,7 +124,6 @@ def extract_card_details_from_file(file_name: str,
       details_title = details.find_all("td")[0].text[0:-3]
       if details_title == "Limite en deck":
         limit_shift = True
-        print("!!!")
       if details_title == "PV" or details_title == "HP":
         PV_shift = True
       details_value = details.find_all("td")[1]
@@ -150,6 +150,11 @@ def extract_card_details_from_file(file_name: str,
     card["mana_cost"] = extract_costs(details_dict[3 + total_shift])
     card["components"] = extract_costs(details_dict[4 + total_shift])
     card["effect"] = details_dict[5 + total_shift].text.strip()
+    card["full_name"] = card["name"]
+    transmutable_elements = re.search("Transmutable : (\w+)(, (\w+))*", card["effect"])
+    if transmutable_elements:
+      transmutable_elements = transmutable_elements.group()[15:].split(", ")
+      card["full_name"] += f" {" ".join(transmutable_elements)}"
     card["illustration"] = details_dict[6 + total_shift].text.strip()
     card["flavor_text"] = details_dict[7 + total_shift].text.strip()
     card["extension"] = details_dict[8 + total_shift].text.strip()
@@ -183,7 +188,6 @@ def get_images(in_file_name: str = "cards_catalog.json",
     mkdir(cards_image_folder_name)
   with open(in_file_name) as file:
     card_catalog = json.loads(file.read())
-  print(card_catalog)
   for card in card_catalog:
     with open(f"{cards_image_folder_name}{card['slug']}.png",
               "wb") as card_image_file:
