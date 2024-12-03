@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {sanitizeElement} from "$lib/utils.js"
+    import { sanitizeElement } from "$lib/utils.js";
     // @ts-ignore
     import { decks } from "./shared.svelte.ts";
     let { number, card } = $props();
@@ -24,7 +24,11 @@
         href="https://magenoir.com/collection/FR/{sanitizeElement(
             card.element,
         )}/{card.slug}.html"
-        target="_blank">{card.full_name}</a
+        target="_blank"
+        >{card.name}
+        {#if card.transmutables.length > 0}
+            ({card.transmutables.substring(1)})
+        {/if}</a
     >
 </td>
 
