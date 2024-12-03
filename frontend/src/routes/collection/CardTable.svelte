@@ -62,7 +62,7 @@
         );
 
         // Check if name matches
-        is_included &&= sanitizeString(card.name).includes(
+        is_included &&= sanitizeString(card.full_name).includes(
             sanitizeString(filter_options["name"]),
         );
 
