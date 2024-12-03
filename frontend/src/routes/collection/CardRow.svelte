@@ -43,14 +43,15 @@
             href="https://magenoir.com/collection/FR/{sanitizeElement(
                 card.element,
             )}/{card.slug}.html"
-            target="_blank">{card.name}</a
+            target="_blank"
+            >{card.name}<span class="dont-show">{card.transmutables}</span></a
         >
     </td>
     <td class="type">
         {card.type}
         {card.subtype}
-        {#if card.type=="Permanent" && card.lifepoints !== null}
-            <br/>
+        {#if card.type == "Permanent" && card.lifepoints !== null}
+            <br />
             PV : {card.lifepoints}
         {/if}
     </td>
@@ -108,6 +109,14 @@
     tr {
         /* Add a bottom border to all table rows */
         border-bottom: 2px solid #ddd;
+    }
+    @media (hover: hover) {
+        .dont-show {
+            visibility: hidden;
+        }
+        .name:hover .dont-show {
+            visibility: visible;
+        }
     }
 
     tr:nth-child(odd) {
