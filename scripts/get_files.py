@@ -151,10 +151,12 @@ def extract_card_details_from_file(file_name: str,
     card["components"] = extract_costs(details_dict[4 + total_shift])
     card["effect"] = details_dict[5 + total_shift].text.strip()
     card["full_name"] = card["name"]
+    card["transmutables"] = ""
     transmutable_elements = re.search("Transmutable : ([A-Za-zÀ-ÿ]+)(, ([A-Za-zÀ-ÿ]+))*", card["effect"])
     if transmutable_elements:
       transmutable_elements = transmutable_elements.group()[15:].split(", ")
-      card["full_name"] += f" {" ".join(transmutable_elements)}"
+      card["transmutables"] = f" {" ".join(transmutable_elements)}"
+      card["full_name"] += card["transmutables"]
     card["illustration"] = details_dict[6 + total_shift].text.strip()
     card["flavor_text"] = details_dict[7 + total_shift].text.strip()
     card["extension"] = details_dict[8 + total_shift].text.strip()
