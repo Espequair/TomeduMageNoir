@@ -38,7 +38,7 @@ export class Decks {
 
     constructor() {
         this.activeDeckNum = 0
-        this.decks=[new Deck()]
+        this.decks = [new Deck()]
         /*
         if (typeof window !== 'undefined') {
             console.log("Loading: window found")
@@ -67,7 +67,7 @@ export class Decks {
         } else {
             alert("NO WINDOW");
         }*/
-       alert("not implemented yet")
+        alert("not implemented yet")
     }
 
     getDecksfromLocalStorage(): Deck[] {
@@ -85,7 +85,12 @@ export class Decks {
     }
 
     pop() {
-        this.decks.splice(this.activeDeckNum, 1)
+        if (this.decks.length > 1) {
+            this.decks.splice(this.activeDeckNum, 1);
+            this.activeDeckNum = Math.max(0, this.activeDeckNum - 1)
+        } else {
+            alert("Can't have less than one deck");
+        }
     }
 
     push(deck: Deck) {
