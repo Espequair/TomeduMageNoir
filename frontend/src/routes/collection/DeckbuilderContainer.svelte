@@ -13,23 +13,24 @@
     }
     function createNewDeck() {
         decks.push(new Deck("New Deck"));
-        decks.activeDeckNum = decks.decks.length - 1
+        decks.activeDeckNum = decks.decks.length - 1;
     }
 </script>
 
 <div id="root-container">
     <div id="deck-selector" style="display: inline;">
-        <button type="button" onclick={decks.saveDecksToLocalStorage}>Save All Decks</button>
-        <br/>
+        <button type="button" onclick={() => decks.saveDecksToLocalStorage()}
+            >Save All Decks</button
+        >
+        <br />
         <button type="button" onclick={createNewDeck}>Create New Deck</button>
         <select bind:value={decks.activeDeckNum}>
             {#each decks.list as deck, index}
-                <option value={index}>{index+1} : {deck.name}</option>
+                <option value={index}>{index + 1} : {deck.name}</option>
             {/each}
         </select>
-        <input type="text" bind:value={decks.activeDeck.name}>
-        <button type="button" onclick={()=>decks.pop()}>deleteDeck</button>
-
+        <input type="text" bind:value={decks.activeDeck.name} />
+        <button type="button" onclick={() => decks.pop()}>deleteDeck</button>
     </div>
     <div id="deck-builder">
         <div id="table-header">

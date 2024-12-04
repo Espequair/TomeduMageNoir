@@ -1,5 +1,6 @@
 import { SvelteMap } from "svelte/reactivity";
 import type { Card } from "./+page.js";
+import { browser } from "$app/environment";
 
 export class Deck {
     name: string;
@@ -30,58 +31,57 @@ export class Deck {
         }
         this.cards.set(card, Math.min(Math.max(cardCount + diff, 0), 4));
     }
+    toJSON() {
+        return {
+            name: this.name,
+            cards: Array.from(this.cards.entries())
+        };
+    }
 }
 export class Decks {
-    decks: Deck[] = $state([]);
-    activeDeckNum: number = $state(0)
-    activeDeck: Deck = $derived(this.decks[this.activeDeckNum])
+    decks: Deck[];
+    activeDeckNum: number;
 
     constructor() {
         this.activeDeckNum = 0
-        this.decks = [new Deck()]
-        /*
-        if (typeof window !== 'undefined') {
-            console.log("Loading: window found")
-            let storedValue = localStorage.getItem('magenoir_deckbuilder');
-            console.log("value of localstorage is " + storedValue)
-            if (storedValue == null || storedValue == "undefined") {
-                this.decks = [new Deck()]; // localstorage exists but no key
-            } else {
-                this.decks = JSON.parse(storedValue); // found a key
+        this.decks = Decks.getDecksfromLocalStorage()
+    }
+
+    static getDecksfromLocalStorage(): Deck[] {
+        if (browser) {
+            let plainValue = localStorage.getItem('magenoir_deckbuilder');
+            if (plainValue) {
+                let plainObjects = JSON.parse(plainValue)
+                let decks: Deck[] = []
+                for (let plainDeck of plainObjects) {
+                    let deck = new Deck(plainDeck.name)
+                    for (let plainCard of plainDeck.cards) {
+                        deck.cards.set(plainCard[0] as Card, plainCard[1])
+                    }
+                    decks.push(deck);
+                }
+                return decks;
             }
-        } else {
-            console.log("Loading: window not found")
-            this.decks = [new Deck()]; // localstorage does not exist
-        }*/
-    }
-
-    saveDecksToLocalStorage() {
-        /*
-        if (typeof window !== 'undefined') {
-            console.log("Saving: window found")
-            console.log("value of localstorage is " + localStorage.getItem("magenoir_deckbuilder"))
-            console.log("printing snapsot of deck " + $state.snapshot(this.decks))
-            console.log("printing JSON of snapshot " + JSON.stringify($state.snapshot(this.decks)))
-            localStorage.setItem("magenoir_deckbuilder", JSON.stringify(this.decks))
-            console.log("value of localstorage is " + localStorage.getItem("magenoir_deckbuilder"))
-        } else {
-            alert("NO WINDOW");
-        }*/
-        alert("not implemented yet")
-    }
-
-    getDecksfromLocalStorage(): Deck[] {
-        if (typeof window !== 'undefined') {
-            let storedValue = localStorage.getItem('key') || 'default value';
-            console.log("inside");
-            return [new Deck()];
         }
-        console.log("outside");
         return [new Deck()];
+    }
+
+    get activeDeck() {
+
+        return this.decks[this.activeDeckNum]
     }
 
     get list(): Deck[] {
         return this.decks;
+    }
+
+    saveDecksToLocalStorage() {
+        if (browser) {
+            const serializedDecks = this.decks.map(deck => deck.toJSON());
+            localStorage.setItem("magenoir_deckbuilder", JSON.stringify(serializedDecks));
+        } else {
+            alert("NO WINDOW");
+        }
     }
 
     pop() {
