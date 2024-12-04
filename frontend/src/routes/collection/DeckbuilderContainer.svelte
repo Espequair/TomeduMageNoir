@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { sanitizeString } from "$lib/utils.js";
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
     import type { Card } from "./+page.js";
     import { Deck, decks } from "./shared.svelte.js";
@@ -6,7 +7,7 @@
         let exp: string = "";
         for (let cardTuple of decks.activeDeck.getAllcards()) {
             let [card, count]: [Card, number] = cardTuple;
-            exp += count + " " + card.name + "\n";
+            exp += count + " " + sanitizeString(card.name) + "\n";
         }
         navigator.clipboard.writeText(exp);
     }
