@@ -85,6 +85,13 @@
 </tr>
 
 <style>
+    td.name a {
+        display: block;
+        text-transform: lowercase;
+    }
+    td.name a::first-letter {
+        text-transform: capitalize;
+    }
     .take-all {
         width: 100%; /* Make the button fill the width */
         height: 100%; /* Make the button fill the height */

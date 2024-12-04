@@ -19,7 +19,7 @@
         >+</button
     >
 </td>
-<td>
+<td class="name">
     <a
         href="https://magenoir.com/collection/FR/{sanitizeElement(
             card.element,
@@ -33,4 +33,11 @@
 </td>
 
 <style>
+    td.name a {
+        display: block;
+        text-transform: lowercase;
+    }
+    td.name a::first-letter {
+        text-transform: capitalize;
+    }
 </style>
