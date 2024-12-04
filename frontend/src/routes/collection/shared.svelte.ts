@@ -48,22 +48,17 @@ export class Decks {
     }
 
     static getDecksfromLocalStorage(): Deck[] {
-        if (browser) {
-            let plainValue = localStorage.getItem('magenoir_deckbuilder');
-            if (plainValue) {
-                let plainObjects = JSON.parse(plainValue)
-                let decks: Deck[] = []
-                for (let plainDeck of plainObjects) {
-                    let deck = new Deck(plainDeck.name)
-                    for (let plainCard of plainDeck.cards) {
-                        deck.cards.set(plainCard[0] as Card, plainCard[1])
-                    }
-                    decks.push(deck);
-                }
-                return decks;
-            }
-        }
-        return [new Deck()];
+        if (!browser) return [new Deck()];
+
+        const plainValue = localStorage.getItem('magenoir_deckbuilder');
+        if (!plainValue) return [new Deck()];
+
+        const plainObjects = JSON.parse(plainValue);
+        return plainObjects.map((plainDeck: any) => {
+            const deck = new Deck(plainDeck.name);
+            deck.cards = new SvelteMap(plainDeck.cards.map(([card, count]: [Card, number]) => [card as Card, count]));
+            return deck;
+        });
     }
 
     get activeDeck() {
@@ -76,12 +71,10 @@ export class Decks {
     }
 
     saveDecksToLocalStorage() {
-        if (browser) {
-            const serializedDecks = this.decks.map(deck => deck.toJSON());
-            localStorage.setItem("magenoir_deckbuilder", JSON.stringify(serializedDecks));
-        } else {
-            alert("NO WINDOW");
-        }
+        if (!browser) return alert("NO WINDOW");
+
+        const serializedDecks = this.decks.map(deck => deck.toJSON());
+        localStorage.setItem("magenoir_deckbuilder", JSON.stringify(serializedDecks));
     }
 
     pop() {
