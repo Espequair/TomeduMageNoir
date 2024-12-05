@@ -6,9 +6,10 @@ export class Deck {
     name: string;
     cards: SvelteMap<Card, number>;
 
-    constructor(name: string | null = null) {
-        this.name = name == null ? "New deck" : name;
-        this.cards = new SvelteMap<Card, number>();
+    // Const
+    constructor(name?: string, cards?: any) {
+        this.name = name || "New deck";
+        this.cards = new SvelteMap<Card, number>(cards?.map(([card, count]: [Card, number]) => [card as Card, count]))
     }
 
     getCardCount() {
@@ -48,12 +49,15 @@ export class Decks {
     }
 
     static getDecksfromLocalStorage(): Deck[] {
+        // If we're not in a browser environment, return a new Decklist
         if (!browser) return [new Deck()];
 
         const plainValue = localStorage.getItem('magenoir_deckbuilder');
+        // If nothing is stored in the
         if (!plainValue) return [new Deck()];
 
         const plainObjects = JSON.parse(plainValue);
+        // This one is rough. We're taking a JSON Object and converting it back to a Deck[] format
         return plainObjects.map((plainDeck: any) => {
             const deck = new Deck(plainDeck.name);
             deck.cards = new SvelteMap(plainDeck.cards.map(([card, count]: [Card, number]) => [card as Card, count]));
@@ -80,7 +84,7 @@ export class Decks {
     pop() {
         if (this.decks.length > 1) {
             this.decks.splice(this.activeDeckNum, 1);
-            this.activeDeckNum = Math.max(0, this.activeDeckNum - 1)
+            this.activeDeckNum = Math.min(this.decks.length - 1, this.activeDeckNum)
         } else {
             alert("Can't have less than one deck");
         }
@@ -88,6 +92,7 @@ export class Decks {
 
     push(deck: Deck) {
         this.decks.push(deck);
+        this.activeDeckNum = this.decks.length - 1;
     }
 
 }
