@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { type Card } from "./+page.js";
+    import { page } from "$app/stores";
+    import { type Card } from "$lib/Decks.js";
     import {
         sanitizeElement,
         sanitizeString,
         slug_translator,
     } from "$lib/utils.js";
     import CardRow from "./CardRow.svelte";
-    let data = $props();
-    let cards = data.cards as Card[];
+    let cards = $page.data.cards as Card[];
 
     let filter_options: { [k: string]: any } = $state({
         name: "",
@@ -228,7 +228,7 @@
         </thead>
         <tbody>
             {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
-                <CardRow {card} />
+                <CardRow card={card} />
             {/each}
         </tbody>
     </table>

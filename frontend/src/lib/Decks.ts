@@ -1,6 +1,27 @@
 import { SvelteMap } from "svelte/reactivity";
-import type { Card } from "./+page.js";
 import { browser } from "$app/environment";
+
+export type Card = {
+    transmutables: string;
+    full_name: string;
+    slug: string,
+    mn_image_link: string,
+    language: string,
+    competitive_limit: number,
+    other_languages: object,
+    name: string,
+    element: string,
+    type: string,
+    subtype: string,
+    lifepoints: number | string | null,
+    mana_cost: Record<string, string | number | undefined>,
+    components: Record<string, string | number | undefined>,
+    effect: string,
+    illustration: string,
+    flavor_text: string,
+    extension: string
+    notes: string[],
+}
 
 export class Deck {
     name: string;
@@ -39,6 +60,7 @@ export class Deck {
         };
     }
 }
+
 export class Decks {
     decks: Deck[];
     activeDeckNum: number;
@@ -96,5 +118,3 @@ export class Decks {
     }
 
 }
-
-export let decks: Decks = $state(new Decks());

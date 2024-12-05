@@ -1,8 +1,8 @@
 <script lang="ts">
+    import { page } from "$app/stores";
     import { sanitizeElement } from "$lib/utils.js";
-    // @ts-ignore
-    import { decks } from "./shared.svelte.ts";
     let { number, card } = $props();
+    let decks = $page.data.decks;
 </script>
 
 <td

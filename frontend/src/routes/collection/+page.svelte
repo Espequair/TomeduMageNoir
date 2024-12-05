@@ -1,19 +1,18 @@
 <script lang="ts">
-    import type { Card } from "./+page.js";
+    import type { Card } from "$lib/Decks.js"
     import CardTable from "./CardTable.svelte";
     import DeckbuilderContainer from "./DeckbuilderContainer.svelte";
-    let { data } = $props();
-    let cards: Card[] = data.cards;
+    let { cards, decks } = $props();
     import { Pane, Splitpanes } from "svelte-splitpanes";
 </script>
 
 <div id="useful-container">
     <Splitpanes>
         <Pane minSize={2} size={30}>
-            <DeckbuilderContainer />
+            <DeckbuilderContainer/>
         </Pane>
         <Pane>
-            <CardTable {cards} />
+            <CardTable/>
         </Pane>
     </Splitpanes>
 </div>

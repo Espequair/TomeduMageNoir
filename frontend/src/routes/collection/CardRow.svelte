@@ -1,31 +1,9 @@
 <script lang="ts">
-    let { card } = $props();
-    import { sanitizeElement } from "$lib/utils.js";
-    import { decks, Deck } from "./shared.svelte.js";
-    function insertIcons(str: string): string {
-        return str;
-        const regexMap = {
-            air: /\bair\b/gi,
-            fire: /\bf(ire|eu)\b/gi,
-            mineral: /\bmin(é|e)ral\b/gi,
-            vegetal: /\b(v(égé|ege)tal)\b/gi,
-            arcane: /\b(arcane)\b/gi,
-            water: /\b(eau|water)\b/gi,
-        };
-        Object.entries(regexMap).forEach(([element, regex]) => {
-            const pictStyle =
-                "style='height: 1em; background: black; padding:5px;border-radius: 50%;'";
-            str = str.replace(
-                regex,
-                "$&<img class='pict' " +
-                    pictStyle +
-                    " src='/pict/" +
-                    element +
-                    "_icon.png' alt='$&' />",
-            );
-        });
-        return str;
-    }
+    import { page } from "$app/stores";
+    let data = $props();
+    let card = $derived(data.card);
+    let decks = $page.data.decks
+    import { sanitizeElement, insertIcons } from "$lib/utils.js";
 </script>
 
 <tr>

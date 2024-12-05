@@ -1,8 +1,9 @@
 <script lang="ts">
     import { sanitizeString } from "$lib/utils.js";
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
-    import type { Card } from "./+page.js";
-    import { Deck, decks } from "./shared.svelte.js";
+    import { Deck, type Card } from "$lib/Decks.js";
+    import { page } from "$app/stores";
+    let decks = $page.data.decks;
     function pushToClipboard() {
         let exp: string = "";
         for (let cardTuple of decks.activeDeck.getAllcards()) {
@@ -44,7 +45,7 @@
             <tbody>
                 {#each decks.activeDeck.getAllcards() as [card, count]}
                     <tr class="deckbuilder-row">
-                        <DeckbuilderRow number={count} {card} />
+                        <DeckbuilderRow number={count} {card}/>
                     </tr>
                 {:else}
                     <tr>
