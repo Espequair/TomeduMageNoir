@@ -1,8 +1,6 @@
 <script lang="ts">
-    import type { Card } from "$lib/Decks.js"
     import CardTable from "./CardTable.svelte";
     import DeckbuilderContainer from "./DeckbuilderContainer.svelte";
-    let { cards, decks } = $props();
     import { Pane, Splitpanes } from "svelte-splitpanes";
 </script>
 
