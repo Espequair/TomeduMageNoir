@@ -12,8 +12,7 @@
         navigator.clipboard.writeText(exp);
     }
     function createNewDeck() {
-        decks.push(new Deck("New Deck"));
-        decks.activeDeckNum = decks.decks.length - 1;
+        decks.push(new Deck());
     }
 </script>
 
