@@ -14,13 +14,13 @@
 
 <div id="root-container">
     <div id="deck-selector" style="display: inline;">
-        <button type="button" onclick={() => decks.saveDecksToLocalStorage()}
-            >Save All Decks</button
-        >
+        <button type="button" onclick={() => decks.saveDecksToLocalStorage()}>
+            Save All Decks
+        </button>
         <br />
-        <button type="button" onclick={() => decks.addNewEmptyDeck()}
-            >Create New Deck</button
-        >
+        <button type="button" onclick={() => decks.addNewEmptyDeck()}>
+            Create New Deck
+        </button>
         <select bind:value={decks.activeDeckNum}>
             {#each decks.list as deck, index}
                 <option value={index}>{index + 1} : {deck.name}</option>
@@ -46,7 +46,7 @@
             <tbody>
                 {#each decks.activeDeck.getAllcards() as [card, count]}
                     <tr class="deckbuilder-row">
-                        <DeckbuilderRow number={count} {card}/>
+                        <DeckbuilderRow number={count} {card} />
                     </tr>
                 {:else}
                     <tr>
