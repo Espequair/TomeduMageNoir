@@ -1,7 +1,6 @@
 import { SvelteMap } from "svelte/reactivity";
 import { browser } from "$app/environment";
 import { sanitizeString } from "./utils.js";
-import { writable } from "svelte/store";
 
 export type Card = {
     transmutables: string;
@@ -75,7 +74,7 @@ export class Deck {
 }
 
 export class Decks {
-    decks: Deck[];
+    decks: Deck[] = $state([]);
     activeDeckNum = $state(0);
 
     constructor() {
