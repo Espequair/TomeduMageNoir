@@ -1,11 +1,12 @@
 <script lang="ts">
     // Imports
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
+    import type { Decks } from "$lib/Decks.svelte.js";
+    import { page } from "$app/stores";
 
     // Variables
-    import { page } from "$app/stores";
-    let decks = $page.data.decks;
-
+    let decks: Decks = $page.data.decks;
+    $inspect(decks);
     // Functions
     function pushToClipboard(text: string) {
         navigator.clipboard.writeText(text);
@@ -22,8 +23,10 @@
             Create New Deck
         </button>
         <select bind:value={decks.activeDeckNum}>
-            {#each decks.list as deck, index}
-                <option value={index}>{index + 1} : {deck.name}</option>
+            {#each decks.list as deck, index (deck.uuid)}
+                <option value={index}>
+                    {index + 1} : {deck.name}
+                </option>
             {/each}
         </select>
         <input type="text" bind:value={decks.activeDeck.name} />

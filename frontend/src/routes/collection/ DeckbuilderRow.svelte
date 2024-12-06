@@ -1,8 +1,9 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import type { Decks } from "$lib/Decks.svelte.js";
     import { sanitizeElement } from "$lib/utils.js";
     let { number, card } = $props();
-    let decks = $page.data.decks;
+    let decks: Decks = $page.data.decks;
 </script>
 
 <td class="minimize"

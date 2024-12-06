@@ -1,9 +1,10 @@
 <script lang="ts">
+    import { sanitizeElement, insertIcons } from "$lib/utils.js";
+    import type { Decks } from "$lib/Decks.svelte.js";
     import { page } from "$app/stores";
     let data = $props();
     let card = $derived(data.card);
-    let decks = $page.data.decks
-    import { sanitizeElement, insertIcons } from "$lib/utils.js";
+    let decks: Decks = $page.data.decks;
 </script>
 
 <tr>
