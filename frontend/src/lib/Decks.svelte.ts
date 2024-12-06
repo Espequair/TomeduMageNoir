@@ -1,6 +1,7 @@
 import { SvelteMap } from "svelte/reactivity";
 import { browser } from "$app/environment";
 import { sanitizeString } from "./utils.js";
+import { writable } from "svelte/store";
 
 export type Card = {
     transmutables: string;
@@ -25,11 +26,13 @@ export type Card = {
 }
 
 export class Deck {
-    name: string;
+    uuid: string;
+    name: string = $state("");
     cards: SvelteMap<Card, number>;
 
     // Const
     constructor(name?: string, cards?: any) {
+        this.uuid = crypto.randomUUID();
         this.name = name || "New deck";
         this.cards = new SvelteMap<Card, number>(cards?.map(([card, count]: [Card, number]) => [card as Card, count]))
     }
@@ -57,7 +60,8 @@ export class Deck {
     toJSON() {
         return {
             name: this.name,
-            cards: Array.from(this.cards.entries())
+            cards: Array.from(this.cards.entries()),
+            uuid: this.uuid,
         };
     }
     get exportableDecklist() {
@@ -72,10 +76,9 @@ export class Deck {
 
 export class Decks {
     decks: Deck[];
-    activeDeckNum: number;
+    activeDeckNum = $state(0);
 
     constructor() {
-        this.activeDeckNum = 0
         this.decks = Decks.getDecksfromLocalStorage()
     }
 
@@ -96,8 +99,8 @@ export class Decks {
         });
     }
 
-    get activeDeck() {
 
+    get activeDeck() {
         return this.decks[this.activeDeckNum]
     }
 
