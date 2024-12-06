@@ -1,5 +1,6 @@
 import { SvelteMap } from "svelte/reactivity";
 import { browser } from "$app/environment";
+import { sanitizeString } from "./utils.js";
 
 export type Card = {
     transmutables: string;
@@ -59,6 +60,14 @@ export class Deck {
             cards: Array.from(this.cards.entries())
         };
     }
+    get exportableDecklist() {
+        let exp: string = "";
+        for (let cardTuple of this.getAllcards()) {
+            let [card, count]: [Card, number] = cardTuple;
+            exp += count + " " + sanitizeString(card.name) + "\n";
+        }
+        return exp;
+    }
 }
 
 export class Decks {
@@ -113,8 +122,13 @@ export class Decks {
     }
 
     push(deck: Deck) {
-        this.decks.push(deck);
-        this.activeDeckNum = this.decks.length - 1;
+        this.decks.push(deck); //if no new deck was given, put an empty one
+    }
+
+    addNewEmptyDeck(){
+        console.log("adding new deck "+ this.list.length)
+        this.decks.push(new Deck())
+        console.log("adding new deck "+ this.list.length)
     }
 
 }
