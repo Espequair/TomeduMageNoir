@@ -6,18 +6,18 @@
 </script>
 
 <td class="minimize"
-    ><button type="button" onclick={() => decks.activeDeck.delCard(card)}
-        >🗑️</button
-    ></td
->
+    ><button type="button" onclick={() => decks.activeDeck.delCard(card)}>
+        🗑️
+    </button>
+</td>
 <td class="minimize">
-    <button type="button" onclick={() => decks.activeDeck.modCard(card, -1)}
-        >-</button
-    >
+    <button type="button" onclick={() => decks.activeDeck.modCard(card, -1)}>
+        -
+    </button>
     {number}
-    <button type="button" onclick={() => decks.activeDeck.modCard(card, 1)}
-        >+</button
-    >
+    <button type="button" onclick={() => decks.activeDeck.modCard(card, 1)}>
+        +
+    </button>
 </td>
 <td class="name">
     <a
@@ -25,11 +25,12 @@
             card.element,
         )}/{card.slug}.html"
         target="_blank"
-        >{card.name}
+    >
+        {card.name}
         {#if card.transmutables.length > 0}
             ({card.transmutables.substring(1)})
-        {/if}</a
-    >
+        {/if}
+    </a>
 </td>
 
 <style>
