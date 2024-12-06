@@ -1,19 +1,14 @@
 <script lang="ts">
-    import { sanitizeString } from "$lib/utils.js";
+    // Imports
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
-    import { Deck, type Card } from "$lib/Decks.js";
+
+    // Variables
     import { page } from "$app/stores";
     let decks = $page.data.decks;
-    function pushToClipboard() {
-        let exp: string = "";
-        for (let cardTuple of decks.activeDeck.getAllcards()) {
-            let [card, count]: [Card, number] = cardTuple;
-            exp += count + " " + sanitizeString(card.name) + "\n";
-        }
-        navigator.clipboard.writeText(exp);
-    }
-    function createNewDeck() {
-        decks.push(new Deck());
+
+    // Functions
+    function pushToClipboard(text: string) {
+        navigator.clipboard.writeText(text);
     }
 </script>
 
@@ -23,19 +18,25 @@
             >Save All Decks</button
         >
         <br />
-        <button type="button" onclick={createNewDeck}>Create New Deck</button>
+        <button type="button" onclick={() => decks.addNewEmptyDeck()}
+            >Create New Deck</button
+        >
         <select bind:value={decks.activeDeckNum}>
             {#each decks.list as deck, index}
                 <option value={index}>{index + 1} : {deck.name}</option>
             {/each}
         </select>
         <input type="text" bind:value={decks.activeDeck.name} />
-        <button type="button" onclick={() => decks.pop()}>deleteDeck</button>
+        <button type="button" onclick={() => decks.pop()}>Delete deck</button>
     </div>
     <div id="deck-builder">
         <div id="table-header">
             <br />
-            <button type="button" onclick={pushToClipboard}>
+            <button
+                type="button"
+                onclick={() =>
+                    pushToClipboard(decks.activeDeck.exportableDecklist)}
+            >
                 Copy to Clipboard
             </button>
             <br />
