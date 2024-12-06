@@ -126,9 +126,8 @@ export class Decks {
     }
 
     addNewEmptyDeck(){
-        console.log("adding new deck "+ this.list.length)
         this.decks.push(new Deck())
-        console.log("adding new deck "+ this.list.length)
+        this.activeDeckNum = this.decks.length - 1
     }
 
 }
