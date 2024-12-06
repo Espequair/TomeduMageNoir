@@ -5,12 +5,12 @@
     let decks = $page.data.decks;
 </script>
 
-<td
+<td class="minimize"
     ><button type="button" onclick={() => decks.activeDeck.delCard(card)}
         >🗑️</button
     ></td
 >
-<td>
+<td class="minimize">
     <button type="button" onclick={() => decks.activeDeck.modCard(card, -1)}
         >-</button
     >
@@ -33,6 +33,9 @@
 </td>
 
 <style>
+    td.minimize {
+        width: 10px;
+    }
     td.name a {
         display: block;
         text-transform: lowercase;
