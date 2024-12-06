@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import { type Card } from "$lib/Decks.js";
+    import { type Card } from "$lib/Decks.svelte.js";
     import {
         sanitizeElement,
         sanitizeString,
