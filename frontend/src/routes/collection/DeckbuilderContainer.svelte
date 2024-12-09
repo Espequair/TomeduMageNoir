@@ -65,6 +65,7 @@
     </div>
     <div id="mulligan-generator">
         <button onclick={() => generateMulligan()}>Draw mulligan</button>
+        {#if mulligan.length > 0}
         <div id="mulligan-container">
             <div class="hand-container">
                 <h2>Hand 1</h2>
@@ -87,6 +88,9 @@
                 </ul>
             </div>
         </div>
+        {:else}
+        No Hand Drawn
+        {/if}
     </div>
 </div>
 
