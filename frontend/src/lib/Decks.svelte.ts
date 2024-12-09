@@ -43,6 +43,12 @@ export class Deck {
     getAllcards() {
         return [...this.cards].toSorted((a, b) => a[0].name.localeCompare(b[0].name));
     }
+    
+    get cardList() {
+        let ret: Card[] = [];
+        [...this.cards].map(([card, count])=>{for (let x = 0; x < count; x++) {ret.push(card)}})
+        return ret;
+    }
 
     delCard(card: Card) {
         this.cards.delete(card);

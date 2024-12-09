@@ -1,15 +1,19 @@
 <script lang="ts">
     // Imports
     import DeckbuilderRow from "./ DeckbuilderRow.svelte";
-    import type { Decks } from "$lib/Decks.svelte.js";
+    import type { Card, Decks } from "$lib/Decks.svelte.js";
     import { page } from "$app/stores";
-
+    import { pickRandomItems } from "$lib/utils.js";
     // Variables
     let decks: Decks = $page.data.decks;
+    let mulligan: Card[] = $state([]);
     $inspect(decks);
     // Functions
     function pushToClipboard(text: string) {
         navigator.clipboard.writeText(text);
+    }
+    function generateMulligan() {
+        mulligan = pickRandomItems(decks.activeDeck.cardList, 10);
     }
 </script>
 
@@ -59,9 +63,50 @@
             </tbody>
         </table>
     </div>
+    <div id="mulligan-generator">
+        <button onclick={() => generateMulligan()}>Draw mulligan</button>
+        <div id="mulligan-container">
+            <div class="hand-container">
+                <h2>Hand 1</h2>
+                <ul class="hand">
+                    {#each mulligan.slice(0, 5) as card}
+                        <li class="capitalize">
+                            {card.name}
+                        </li>
+                    {/each}
+                </ul>
+            </div>
+            <div class="hand-container">
+                <h2>Hand 2</h2>
+                <ul class="hand">
+                    {#each mulligan.slice(5) as card}
+                        <li class="capitalize">
+                            {card.name}
+                        </li>
+                    {/each}
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
+    .capitalize {
+        text-transform: lowercase; /* Convert all text to lowercase */
+    }
+
+    .capitalize::first-letter {
+        text-transform: uppercase; /* Capitalize the first letter */
+    }
+    .hand {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    #mulligan-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+    }
     table {
         width: 100%;
         border: black 1px solid;

@@ -48,3 +48,17 @@ export function insertIcons(str: string): string {
     });
     return str;
 }
+
+export function pickRandomItems<T>(array: T[], x: number): T[] {
+    if (x > array.length) {
+        throw new Error("Cannot pick more items than are in the array");
+    }
+
+    const shuffled = array.slice(); // Create a shallow copy to avoid modifying the original array
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1)); // Pick a random index
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
+    }
+
+    return shuffled.slice(0, x); // Take the first `x` items
+}
