@@ -33,8 +33,8 @@ export class Card {
     toJSON() {
         return {
             ...this,
-            mana_cost: [...this.mana_cost.entries()],
-            components: [...this.components.entries()]
+            mana_cost: Object.fromEntries(this.mana_cost.entries()),
+            components: Object.fromEntries(this.components.entries())
         };
     }
 
@@ -76,6 +76,7 @@ export class Deck {
         const ret: Map<string, [number, number]> = new Map();
 
         // Initialize components in the map with [0, 0]
+        console.log(this.cardList)
         for (const card of this.cardList) {
             for (const component of card.components.keys()) {
                 if (!ret.has(component)) {

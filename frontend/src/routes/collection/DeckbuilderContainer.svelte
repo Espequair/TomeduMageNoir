@@ -64,7 +64,7 @@
             </tbody>
         </table>
     </div>
-    <div id="component-helper">
+    <div id="deck-builder-helpers">
         <div id="component-helper">
             <table>
                 <thead>

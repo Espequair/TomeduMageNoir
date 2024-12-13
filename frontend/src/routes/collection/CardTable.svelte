@@ -36,7 +36,7 @@
     );
     let mana_cost_list = $derived(
         filtered_card_list.reduce((collection, card) => {
-            for (const cost in card.mana_cost) {
+            for (const cost of [...card.mana_cost.keys()]) {
                 collection.add(sanitizeElement(cost));
             }
             return collection;
@@ -45,7 +45,7 @@
     let comp_cost_list = $derived(
         [
             ...filtered_card_list.reduce((collection, card) => {
-                for (const cost in card.components) {
+                for (const cost of [...card.components.keys()]) {
                     collection.add(sanitizeElement(cost));
                 }
                 return collection;
