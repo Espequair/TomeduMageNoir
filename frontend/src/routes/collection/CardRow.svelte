@@ -40,7 +40,7 @@
     </td>
     <td class="mana-cost">
         <ul class="noBullets">
-            {#each Object.entries(card.mana_cost).toSorted( (f, s) => f[0].localeCompare(s[0]), ) as [a, b]}
+            {#each [...card.mana_cost.entries()].toSorted( (f, s) => f[0].localeCompare(s[0]) ) as [a, b]}
                 <li>
                     {b}
                     {@html insertIcons(a)}
@@ -50,7 +50,7 @@
     </td>
     <td class="components">
         <ul class="noBullets">
-            {#each Object.entries(card.components).toSorted( (f, s) => f[0].localeCompare(s[0]), ) as [a, b]}
+            {#each [...card.components.entries()].toSorted( (f, s) => f[0].localeCompare(s[0]) ) as [a, b]}
                 <li>
                     {b}
                     {a}
