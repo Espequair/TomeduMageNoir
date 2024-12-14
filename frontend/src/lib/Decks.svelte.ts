@@ -71,11 +71,12 @@ export class Deck {
         return ret;
     }
 
-    get componentsHelper() {
-        // Returns {"component": [needed, inDeck]}
+    get componentsHelper() : Map<string, [number, number]> {
+        // Returns ["component": [needed, inDeck]]
         const ret: Map<string, [number, number]> = new Map();
 
         // Initialize components in the map with [0, 0]
+        // We do this because we have to know what components are in the deck before we check the full name
         console.log(this.cardList)
         for (const card of this.cardList) {
             for (const component of card.components.keys()) {
@@ -89,7 +90,7 @@ export class Deck {
         for (const card of this.cardList) {
             // Increment "inDeck" count for matching components
             for (const [component, counts] of ret.entries()) {
-                if (card.name.toLowerCase().includes(component.toLowerCase())) {
+                if (card.full_name.toLowerCase().includes(component.toLowerCase())) {
                     counts[1] += 1; // Increment inDeck
                 }
             }
