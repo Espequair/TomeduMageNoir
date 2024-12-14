@@ -152,9 +152,11 @@
             <tr>
                 <th><h2>Add to Deck</h2></th>
                 <th>
-                    <h2 onclick={change_sort_order("name")}>
-                        Name {display_correct_symbol("name")}
-                    </h2>
+                    <button class="filter-button" onclick={change_sort_order("name")}>
+                        <h2>
+                            Name {display_correct_symbol("name")}
+                        </h2>
+                    </button>
                     <input
                         type="text"
                         class="myInput"
@@ -164,9 +166,11 @@
                     />
                 </th>
                 <th>
-                    <h2 onclick={change_sort_order("type")}>
+                    <button class="filter-button" onclick={change_sort_order("type")}>
+                        <h2>
                         Type {display_correct_symbol("type")}
                     </h2>
+                    </button>
                     <select bind:value={filter_options["type"]}>
                         <option value="everything" selected> All Types </option>
                         {#each type_list as type}
@@ -175,9 +179,11 @@
                     </select>
                 </th>
                 <th>
-                    <h2 onclick={change_sort_order("element")}>
+                    <button class="filter-button" onclick={change_sort_order("element")}>
+                        <h2>
                         Element {display_correct_symbol("element")}
                     </h2>
+                    </button>
                     <select bind:value={filter_options["element"]}>
                         <option value="everything" selected>
                             All Elements
@@ -188,9 +194,11 @@
                     </select>
                 </th>
                 <th>
-                    <h2 onclick={change_sort_order("mana_cost")}>
+                    <button class="filter-button" onclick={change_sort_order("mana_cost")}>
+                        <h2>
                         Mana Cost {display_correct_symbol("mana_cost")}
                     </h2>
+                    </button>
                     <select bind:value={filter_options["mana_cost"]}>
                         <option value="everything" selected>
                             Any mana cost
@@ -201,10 +209,11 @@
                     </select>
                 </th>
                 <th>
-                    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                    <h2 onclick={change_sort_order("components")}>
+                    <button class="filter-button" onclick={change_sort_order("components")}>
+                        <h2>
                         Components {display_correct_symbol("components")}
                     </h2>
+                    </button>
                     <select bind:value={filter_options["comp_cost"]}>
                         <option value="everything" selected>
                             Any component cost
@@ -228,7 +237,7 @@
         </thead>
         <tbody>
             {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
-                <CardRow card={card} />
+                <CardRow {card} />
             {/each}
         </tbody>
     </table>
