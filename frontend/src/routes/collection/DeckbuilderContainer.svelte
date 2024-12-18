@@ -19,7 +19,7 @@
 </script>
 
 <div id="root-container">
-    <div id="deck-selector" style="display: inline;">
+    <div id="deck-selector">
         <button type="button" onclick={() => decks.saveDecksToLocalStorage()}>
             Save All Decks
         </button>
@@ -118,6 +118,80 @@
 </div>
 
 <style>
+    tr:nth-child(2n+1)
+    {
+        background-color: #293438!important;
+    }
+    tr
+    {
+        background-color: #1D2429;
+    }
+    tr:nth-child(2n+1):hover, tr:hover
+    {
+        background-color: #525150!important;
+    }
+    #root-container
+    {
+        background-color: #000;
+        padding: 20px;
+        color: white;
+        display: block;
+    }
+    #root-container button
+    {
+        background-color: #292828;
+        border-radius: 5px;
+        border:none;
+        padding: 5px;
+        margin: 5px;
+        color: #fff;
+        min-width: 50%;
+        transition: all ease 0.5s;
+        cursor: pointer;
+    }
+    #root-container button:hover
+    {
+        transform: scale(0.95);
+        transition: all ease 0.5s;
+        background-color: #525150;
+    }
+    #root-container select, #root-container input 
+    {
+        padding: 5px;
+        margin: 5px;
+        border-radius: 5px;
+        border: none;
+        min-width: 50%;
+    }
+    #deck-selector, #table-header, #mulligan-generator
+    {
+        display: flex;
+        padding-bottom: 20px;
+        flex-direction: column;
+        border-bottom: 3px ridge #525150;
+        text-align: center;
+    }
+    #mulligan-container
+    {
+        column-gap:20%;
+        width: 100%;
+    }
+    #mulligan-container h2
+    {
+        text-align: center;
+    }
+    #mulligan-container .hand
+    {
+        padding-left: 15%;
+    }
+    #deck-selector
+    {
+        margin-bottom: 20px;
+    }
+    #deck-builder button{
+        margin-bottom: 5px ;
+    }
+
     .capitalize {
         text-transform: lowercase; /* Convert all text to lowercase */
     }
