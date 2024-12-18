@@ -17,8 +17,8 @@
 
 <style>
     #useful-container {
-        border: 2px dotted rgb(96 139 168);
         display: flex;
         justify-content: space-between;
+        padding: 10px;
     }
 </style>

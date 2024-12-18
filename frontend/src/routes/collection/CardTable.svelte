@@ -241,13 +241,22 @@
             {/each}
         </tbody>
     </table>
-    <div id="result-counter">
-        <h2>Results {filtered_card_list.length}</h2>
-    </div>
+</div>
+<div id="result-counter">
+    <h2>Results {filtered_card_list.length}</h2>
 </div>
 
 <!-- svelte-ignore css_unused_selector -->
 <style>
+
+    #table-root
+    {
+        background-color: #293438;
+        overflow-x: auto;
+        transform: rotateX(180deg);
+        /* puts the horizontal scrollbar at the top of the table*/
+    }
+
     .noBullets {
         list-style-type: none;
         /* Remove bullets */
@@ -261,20 +270,47 @@
         background: #999999;
         border: 5px solid;
         position: sticky;
-        top: 0px;
+        top: 0;
     }
     thead th {
         border-left: 1px solid;
+        background-color: #000;
+        color: #fff;
+    }
+    thead th h2{
+        font-size: 20px;
+
+    }
+    thead th button h2{
+        margin: 5px;
+        font-size: 16px;
+        color: #fff;
+    }
+    /**thead th button h2:hover::after{
+       content: "▼";
+    }**/
+    thead th button {
+        margin:0px 0px 16.6px 0px;
+        width: 100%;
+        background: none;
+        border: none;
+    }
+    thead th select{
+        border:none;
+        border-radius:5px;
+        height: 25px;
     }
     .myInput {
-        width: 100%;
-        /* Full-width */
+        width: 95%;
+        /* not overflowing*/
         font-size: 16px;
         /* Increase font-size */
-        border: 1px solid #ddd;
-        /* Add a grey border */
-        margin-bottom: 12px;
-        /* Add some space below the input */
+        height: 23px;
+        border-radius: 5px;
+        border: none;
+    }
+    .myInput::placeholder {
+     font-size: 12px;
     }
 
     #myTable {
@@ -282,9 +318,10 @@
         /* Collapse borders */
         width: 100%;
         /* Full-width */
-        border: 1px solid #ddd;
-        /* Add a grey border */
         font-size: 18px;
         /* Increase font-size */
+        transform: rotateX(180deg);
+        /*transform back the content in the right direction after putting the scrollbar at the top*/
+        
     }
 </style>

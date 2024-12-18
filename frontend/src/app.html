@@ -12,5 +12,47 @@
 <body data-sveltekit-preload-data="hover">
     <div>%sveltekit.body%</div>
 </body>
-
+<style>
+    .splitpanes__splitter 
+{
+    background-color: #181818!important;
+    border-left:none!important;
+}
+body
+{
+    background-color: #181818;
+    margin: 0px;
+}
+p, h1, nav
+{
+    color: white;
+    text-align: center;
+}
+a
+{
+    color:#fff;
+}
+nav
+{
+    margin: 10px 0px 50px 0px;
+    font-size: 20px;  
+    color: #1d1d1d;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 0 2px 2px #fff;
+} 
+nav a
+{
+    color: #fff;
+    text-transform: uppercase;
+    padding: 33px 38px 38px 38px;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+}
+nav a:hover
+{
+    background-color: #000;
+    color: #ec6553;
+}
+</style>
 </html>
