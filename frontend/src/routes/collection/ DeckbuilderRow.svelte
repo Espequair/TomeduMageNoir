@@ -35,6 +35,19 @@
 </td>
 
 <style>
+    button
+    {
+        border: none;
+        border-radius: 5px;
+        width: 25px;
+        height: 25px;
+        text-align: center;
+    }
+
+    button:hover
+    {
+        cursor: pointer;
+    }
     td.minimize {
         width: 10px;
     }
