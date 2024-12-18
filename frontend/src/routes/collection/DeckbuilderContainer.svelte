@@ -7,7 +7,7 @@
     // Variables
     let decks: Decks = $page.data.decks;
     let mulligan: Card[] = $state([]);
-    let componentHelper = $derived(decks.activeDeck.componentsHelper);
+    $inspect(decks);
     // Functions
     function pushToClipboard(text: string) {
         navigator.clipboard.writeText(text);
@@ -51,7 +51,7 @@
         </div>
         <table>
             <tbody>
-                {#each decks.activeDeck.getAllcards() as [slug, [card, count]]}
+                {#each decks.activeDeck.getAllcards() as [card, count]}
                     <tr class="deckbuilder-row">
                         <DeckbuilderRow number={count} {card} />
                     </tr>
@@ -63,56 +63,34 @@
             </tbody>
         </table>
     </div>
-    <div id="deck-builder-helper">
-        <div id="component-helper">
-            <table>
-                <thead>
-                    <tr>
-                        <td><b>Component</b></td>
-                        <td><b>Needed</b></td>
-                        <td><b>Present</b></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each componentHelper as [component, [needed, inDeck]]}
-                    <tr>
-                        <td>{component}</td>
-                        <td> {needed}</td>
-                        <td>{inDeck}</td>
-                    </tr>
+    <div id="mulligan-generator">
+        <button onclick={() => generateMulligan()}>Draw mulligan</button>
+        {#if mulligan.length > 0}
+        <div id="mulligan-container">
+            <div class="hand-container">
+                <h2>Hand 1</h2>
+                <ul class="hand">
+                    {#each mulligan.slice(0, 5) as card}
+                        <li class="capitalize">
+                            {card.name}
+                        </li>
                     {/each}
-                </tbody>
-            </table>
+                </ul>
+            </div>
+            <div class="hand-container">
+                <h2>Hand 2</h2>
+                <ul class="hand">
+                    {#each mulligan.slice(5) as card}
+                        <li class="capitalize">
+                            {card.name}
+                        </li>
+                    {/each}
+                </ul>
+            </div>
         </div>
-        <div id="mulligan-generator">
-            <button onclick={() => generateMulligan()}>Draw mulligan</button>
-            {#if mulligan.length > 0}
-                <div id="mulligan-container">
-                    <div class="hand-container">
-                        <h2>Hand 1</h2>
-                        <ul class="hand">
-                            {#each mulligan.slice(0, 5) as card}
-                                <li class="capitalize">
-                                    {card.name}
-                                </li>
-                            {/each}
-                        </ul>
-                    </div>
-                    <div class="hand-container">
-                        <h2>Hand 2</h2>
-                        <ul class="hand">
-                            {#each mulligan.slice(5) as card}
-                                <li class="capitalize">
-                                    {card.name}
-                                </li>
-                            {/each}
-                        </ul>
-                    </div>
-                </div>
-            {:else}
-                No Hand Drawn
-            {/if}
-        </div>
+        {:else}
+        No Hand Drawn
+        {/if}
     </div>
 </div>
 
