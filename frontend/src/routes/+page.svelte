@@ -12,4 +12,5 @@
     Le code est disponible sur <a
         href="https://github.com/espequair/TomeDuMageNoir">Github</a
     >
+    Un grand merci à <a href="https://github.com/Seccyeth">Seccyeth</a> Pour son aide sur le CSS.
 </p>
