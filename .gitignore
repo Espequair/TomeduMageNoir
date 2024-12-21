@@ -3,5 +3,5 @@ cards_html/
 *.swp
 uv.lock
 .replit
-workspace/
+workspace*/
 node_modules/
