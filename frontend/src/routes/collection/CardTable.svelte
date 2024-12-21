@@ -66,6 +66,9 @@
             sanitizeString(filter_options["name"]),
         );
 
+        // Check if name matches
+        is_included &&= card.language == (filter_options["language"]);
+
         // Check if type matches
         is_included &&=
             card.type === filter_options["type"] ||
@@ -146,13 +149,20 @@
     }
 </script>
 
+<select bind:value={filter_options["language"]}>
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+</select>
 <div id="table-root">
     <table id="myTable">
         <thead id="searchGroup">
             <tr>
                 <th><h2>Add to Deck</h2></th>
                 <th>
-                    <button class="filter-button" onclick={change_sort_order("name")}>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("name")}
+                    >
                         <h2>
                             Name {display_correct_symbol("name")}
                         </h2>
@@ -166,10 +176,13 @@
                     />
                 </th>
                 <th>
-                    <button class="filter-button" onclick={change_sort_order("type")}>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("type")}
+                    >
                         <h2>
-                        Type {display_correct_symbol("type")}
-                    </h2>
+                            Type {display_correct_symbol("type")}
+                        </h2>
                     </button>
                     <select bind:value={filter_options["type"]}>
                         <option value="everything" selected> All Types </option>
@@ -179,10 +192,13 @@
                     </select>
                 </th>
                 <th>
-                    <button class="filter-button" onclick={change_sort_order("element")}>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("element")}
+                    >
                         <h2>
-                        Element {display_correct_symbol("element")}
-                    </h2>
+                            Element {display_correct_symbol("element")}
+                        </h2>
                     </button>
                     <select bind:value={filter_options["element"]}>
                         <option value="everything" selected>
@@ -194,10 +210,13 @@
                     </select>
                 </th>
                 <th>
-                    <button class="filter-button" onclick={change_sort_order("mana_cost")}>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("mana_cost")}
+                    >
                         <h2>
-                        Mana Cost {display_correct_symbol("mana_cost")}
-                    </h2>
+                            Mana Cost {display_correct_symbol("mana_cost")}
+                        </h2>
                     </button>
                     <select bind:value={filter_options["mana_cost"]}>
                         <option value="everything" selected>
@@ -209,10 +228,13 @@
                     </select>
                 </th>
                 <th>
-                    <button class="filter-button" onclick={change_sort_order("components")}>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("components")}
+                    >
                         <h2>
-                        Components {display_correct_symbol("components")}
-                    </h2>
+                            Components {display_correct_symbol("components")}
+                        </h2>
                     </button>
                     <select bind:value={filter_options["comp_cost"]}>
                         <option value="everything" selected>
@@ -248,9 +270,7 @@
 
 <!-- svelte-ignore css_unused_selector -->
 <style>
-
-    #table-root
-    {
+    #table-root {
         background-color: #293438;
         overflow-x: auto;
         transform: rotateX(180deg);
@@ -277,11 +297,10 @@
         background-color: #000;
         color: #fff;
     }
-    thead th h2{
+    thead th h2 {
         font-size: 20px;
-
     }
-    thead th button h2{
+    thead th button h2 {
         margin: 5px;
         font-size: 16px;
         color: #fff;
@@ -290,14 +309,14 @@
        content: "▼";
     }**/
     thead th button {
-        margin:0px 0px 16.6px 0px;
+        margin: 0px 0px 16.6px 0px;
         width: 100%;
         background: none;
         border: none;
     }
-    thead th select{
-        border:none;
-        border-radius:5px;
+    thead th select {
+        border: none;
+        border-radius: 5px;
         height: 25px;
     }
     .myInput {
@@ -310,7 +329,7 @@
         border: none;
     }
     .myInput::placeholder {
-     font-size: 12px;
+        font-size: 12px;
     }
 
     #myTable {
@@ -322,6 +341,5 @@
         /* Increase font-size */
         transform: rotateX(180deg);
         /*transform back the content in the right direction after putting the scrollbar at the top*/
-        
     }
 </style>
