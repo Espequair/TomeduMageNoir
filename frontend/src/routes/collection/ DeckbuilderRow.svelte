@@ -22,7 +22,7 @@
 </td>
 <td class="name">
     <a
-        href="https://magenoir.com/collection/FR/{sanitizeElement(
+        href="https://magenoir.com/collection/{card.language.toUpperCase()}/{sanitizeElement(
             card.element,
         )}/{card.slug}.html"
         target="_blank"
