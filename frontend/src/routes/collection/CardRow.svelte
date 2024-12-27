@@ -19,7 +19,7 @@
     </td>
     <td class="name">
         <a
-            href="https://magenoir.com/collection/FR/{sanitizeElement(
+            href="https://magenoir.com/collection/{card.language.toUpperCase()}/{sanitizeElement(
                 card.element,
             )}/{card.slug}.html"
             target="_blank"
@@ -40,7 +40,7 @@
     </td>
     <td class="mana-cost">
         <ul class="noBullets">
-            {#each Object.entries(card.mana_cost).toSorted( (f, s) => f[0].localeCompare(s[0]), ) as [a, b]}
+            {#each [...card.mana_cost.entries()].toSorted( (f, s) => f[0].localeCompare(s[0]) ) as [a, b]}
                 <li>
                     {b}
                     {@html insertIcons(a)}
@@ -50,7 +50,7 @@
     </td>
     <td class="components">
         <ul class="noBullets">
-            {#each Object.entries(card.components).toSorted( (f, s) => f[0].localeCompare(s[0]), ) as [a, b]}
+            {#each [...card.components.entries()].toSorted( (f, s) => f[0].localeCompare(s[0]) ) as [a, b]}
                 <li>
                     {b}
                     {a}
@@ -64,6 +64,10 @@
 </tr>
 
 <style>
+    td
+    {
+        color: #fff;
+    }
     td.name a {
         display: block;
         text-transform: lowercase;
@@ -72,12 +76,24 @@
         text-transform: capitalize;
     }
     .take-all {
-        width: 100%; /* Make the button fill the width */
-        height: 100%; /* Make the button fill the height */
-        margin: 0; /* Remove extra margin */
+        width: 50px; 
+        height: 50px; 
+        border-radius: 10px;
+        border: none;
+        margin: auto;
         padding: 0; /* Remove default padding */
         display: block; /* Ensure the button behaves like a block element */
         box-sizing: border-box; /* Include borders and padding in the width/height */
+        transition: all ease 0.2s;
+    }
+    .take-all:hover
+    {
+        cursor: pointer;
+    }
+    .take-all:active
+    {
+        font-size: 20px;
+        font-weight: 900;
     }
     .noBullets {
         list-style-type: none;
@@ -88,13 +104,13 @@
         /* Remove margins */
     }
     td {
-        border-left: 1px solid;
-        padding: 0; /* Remove default cell padding */
+        border-left: 1px solid #181818;
+        padding: 5px; /* Remove default cell padding */
     }
 
     tr {
         /* Add a bottom border to all table rows */
-        border-bottom: 2px solid #ddd;
+        border-bottom: 2px solid #181818;
     }
     @media (hover: hover) {
         .dont-show {
@@ -107,12 +123,12 @@
 
     tr:nth-child(odd) {
         /* Add a black */
-        background-color: #deeafe;
+        background-color: #1D2429;
     }
 
     tr:hover {
         /* Add a grey background color to the table header and on hover */
-        background-color: #f1f1f1;
+        background-color: #525150;
     }
     td.preserve-linebreak {
         white-space: pre-line;

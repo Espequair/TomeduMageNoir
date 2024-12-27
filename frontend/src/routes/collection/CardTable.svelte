@@ -36,7 +36,7 @@
     );
     let mana_cost_list = $derived(
         filtered_card_list.reduce((collection, card) => {
-            for (const cost in card.mana_cost) {
+            for (const cost of [...card.mana_cost.keys()]) {
                 collection.add(sanitizeElement(cost));
             }
             return collection;
@@ -45,7 +45,7 @@
     let comp_cost_list = $derived(
         [
             ...filtered_card_list.reduce((collection, card) => {
-                for (const cost in card.components) {
+                for (const cost of [...card.components.keys()]) {
                     collection.add(sanitizeElement(cost));
                 }
                 return collection;
@@ -66,6 +66,9 @@
             sanitizeString(filter_options["name"]),
         );
 
+        // Check if name matches
+        is_included &&= card.language == filter_options["language"];
+
         // Check if type matches
         is_included &&=
             card.type === filter_options["type"] ||
@@ -78,14 +81,14 @@
 
         // Check if mana cost matches
         is_included &&=
-            Object.keys(card.mana_cost)
+            [...card.mana_cost.keys()]
                 .map(sanitizeElement)
                 .includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
 
         // Check if component cost matches
         is_included &&=
-            Object.keys(card.components)
+            [...card.components.keys()]
                 .map(sanitizeElement)
                 .includes(filter_options["comp_cost"]) ||
             filter_options["comp_cost"] === "everything";
@@ -146,15 +149,24 @@
     }
 </script>
 
+<select bind:value={filter_options["language"]}>
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+</select>
 <div id="table-root">
     <table id="myTable">
         <thead id="searchGroup">
             <tr>
                 <th><h2>Add to Deck</h2></th>
                 <th>
-                    <h2 onclick={change_sort_order("name")}>
-                        Name {display_correct_symbol("name")}
-                    </h2>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("name")}
+                    >
+                        <h2>
+                            Name {display_correct_symbol("name")}
+                        </h2>
+                    </button>
                     <input
                         type="text"
                         class="myInput"
@@ -164,9 +176,14 @@
                     />
                 </th>
                 <th>
-                    <h2 onclick={change_sort_order("type")}>
-                        Type {display_correct_symbol("type")}
-                    </h2>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("type")}
+                    >
+                        <h2>
+                            Type {display_correct_symbol("type")}
+                        </h2>
+                    </button>
                     <select bind:value={filter_options["type"]}>
                         <option value="everything" selected> All Types </option>
                         {#each type_list as type}
@@ -175,9 +192,14 @@
                     </select>
                 </th>
                 <th>
-                    <h2 onclick={change_sort_order("element")}>
-                        Element {display_correct_symbol("element")}
-                    </h2>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("element")}
+                    >
+                        <h2>
+                            Element {display_correct_symbol("element")}
+                        </h2>
+                    </button>
                     <select bind:value={filter_options["element"]}>
                         <option value="everything" selected>
                             All Elements
@@ -188,9 +210,14 @@
                     </select>
                 </th>
                 <th>
-                    <h2 onclick={change_sort_order("mana_cost")}>
-                        Mana Cost {display_correct_symbol("mana_cost")}
-                    </h2>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("mana_cost")}
+                    >
+                        <h2>
+                            Mana Cost {display_correct_symbol("mana_cost")}
+                        </h2>
+                    </button>
                     <select bind:value={filter_options["mana_cost"]}>
                         <option value="everything" selected>
                             Any mana cost
@@ -201,10 +228,14 @@
                     </select>
                 </th>
                 <th>
-                    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                    <h2 onclick={change_sort_order("components")}>
-                        Components {display_correct_symbol("components")}
-                    </h2>
+                    <button
+                        class="filter-button"
+                        onclick={change_sort_order("components")}
+                    >
+                        <h2>
+                            Components {display_correct_symbol("components")}
+                        </h2>
+                    </button>
                     <select bind:value={filter_options["comp_cost"]}>
                         <option value="everything" selected>
                             Any component cost
@@ -228,17 +259,24 @@
         </thead>
         <tbody>
             {#each filtered_card_list.toSorted(sort_card_list_function()) as card}
-                <CardRow card={card} />
+                <CardRow {card} />
             {/each}
         </tbody>
     </table>
-    <div id="result-counter">
-        <h2>Results {filtered_card_list.length}</h2>
-    </div>
+</div>
+<div id="result-counter">
+    <h2>Results {filtered_card_list.length}</h2>
 </div>
 
 <!-- svelte-ignore css_unused_selector -->
 <style>
+    #table-root {
+        background-color: #293438;
+        overflow-x: auto;
+        transform: rotateX(180deg);
+        /* puts the horizontal scrollbar at the top of the table*/
+    }
+
     .noBullets {
         list-style-type: none;
         /* Remove bullets */
@@ -252,20 +290,46 @@
         background: #999999;
         border: 5px solid;
         position: sticky;
-        top: 0px;
+        top: 0;
     }
     thead th {
         border-left: 1px solid;
+        background-color: #000;
+        color: #fff;
+    }
+    thead th h2 {
+        font-size: 20px;
+    }
+    thead th button h2 {
+        margin: 5px;
+        font-size: 16px;
+        color: #fff;
+    }
+    /**thead th button h2:hover::after{
+       content: "▼";
+    }**/
+    thead th button {
+        margin: 0px 0px 16.6px 0px;
+        width: 100%;
+        background: none;
+        border: none;
+    }
+    thead th select {
+        border: none;
+        border-radius: 5px;
+        height: 25px;
     }
     .myInput {
-        width: 100%;
-        /* Full-width */
+        width: 95%;
+        /* not overflowing*/
         font-size: 16px;
         /* Increase font-size */
-        border: 1px solid #ddd;
-        /* Add a grey border */
-        margin-bottom: 12px;
-        /* Add some space below the input */
+        height: 23px;
+        border-radius: 5px;
+        border: none;
+    }
+    .myInput::placeholder {
+        font-size: 12px;
     }
 
     #myTable {
@@ -273,9 +337,9 @@
         /* Collapse borders */
         width: 100%;
         /* Full-width */
-        border: 1px solid #ddd;
-        /* Add a grey border */
         font-size: 18px;
         /* Increase font-size */
+        transform: rotateX(180deg);
+        /*transform back the content in the right direction after putting the scrollbar at the top*/
     }
 </style>
