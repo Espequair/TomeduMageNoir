@@ -77,7 +77,7 @@ export class Deck {
 
         // Initialize components in the map with [0, 0]
         // We do this because we have to know what components are in the deck before we check the full name
-        console.log(this.cardList)
+        // console.log(this.cardList)
         for (const card of this.cardList) {
             for (const component of card.components.keys()) {
                 if (!ret.has(component)) {
@@ -120,8 +120,8 @@ export class Deck {
         this.cards.set(card, Math.min(Math.max(cardCount + diff, 0), 4));
     }
     toJSON() {
-        console.log("printing deck as i save")
-        console.log([...this.cards.entries()])
+        // console.log("printing deck as i save")
+        // console.log([...this.cards.entries()])
         return {
             name: this.name,
             cards: [...this.cards.entries()].map(([card, count]) => [card.toJSON(), count]),

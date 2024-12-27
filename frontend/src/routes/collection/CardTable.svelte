@@ -67,7 +67,7 @@
         );
 
         // Check if name matches
-        is_included &&= card.language == (filter_options["language"]);
+        is_included &&= card.language == filter_options["language"];
 
         // Check if type matches
         is_included &&=
@@ -81,14 +81,14 @@
 
         // Check if mana cost matches
         is_included &&=
-            Object.keys(card.mana_cost)
+            [...card.mana_cost.keys()]
                 .map(sanitizeElement)
                 .includes(filter_options["mana_cost"]) ||
             filter_options["mana_cost"] === "everything";
 
         // Check if component cost matches
         is_included &&=
-            Object.keys(card.components)
+            [...card.components.keys()]
                 .map(sanitizeElement)
                 .includes(filter_options["comp_cost"]) ||
             filter_options["comp_cost"] === "everything";
