@@ -92,6 +92,10 @@
                 .map(sanitizeElement)
                 .includes(filter_options["comp_cost"]) ||
             filter_options["comp_cost"] === "everything";
+
+        // Check if fan-made nature matches
+        is_included &&= (card.fanmade != true || filter_options["fanmade"]);
+        // "!= true" instead of "== false", because official cards just don't have the fanmade property (it's not set to false)
         return is_included;
     }
 
@@ -153,6 +157,8 @@
     <option value="fr">Français</option>
     <option value="en">English</option>
 </select>
+<input type="checkbox" id="fan-made-checkbox" name="show-fan-made" bind:checked={filter_options["fanmade"]}/>
+<label for="fan-made-checkbox">Include fan-made</label>
 <div id="table-root">
     <table id="myTable">
         <thead id="searchGroup">

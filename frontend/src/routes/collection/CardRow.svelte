@@ -18,13 +18,23 @@
         </button>
     </td>
     <td class="name">
+        {#if card.url_to_collection_page}
+        <a
+            href="{card.url_to_collection_page}"
+            target="_blank"
+        >
+            {card.name}<span class="dont-show">{card.transmutables}</span>
+        </a>
+        {:else}
         <a
             href="https://magenoir.com/collection/{card.language.toUpperCase()}/{sanitizeElement(
                 card.element,
             )}/{card.slug}.html"
             target="_blank"
-            >{card.name}<span class="dont-show">{card.transmutables}</span></a
         >
+            {card.name}<span class="dont-show">{card.transmutables}</span>
+        </a>
+        {/if}
     </td>
     <td class="type">
         {card.type}
